@@ -9,6 +9,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 public class Strength {
 
 	public void strength(EntityDamageByEntityEvent event, PlayerData playerData, DamageType damageType) {
+		if (true) return; // KioCG - 去除不需要的内容
 		if (damageType == DamageType.HAND) {
 			if (OptionL.getBoolean(Option.STRENGTH_HAND_DAMAGE)) {
 				applyStrength(event, playerData);

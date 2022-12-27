@@ -24,7 +24,7 @@ public class Regeneration implements Listener {
 		this.plugin = plugin;
 	}
 	
-	@EventHandler(priority = EventPriority.HIGHEST)
+	// @EventHandler(priority = EventPriority.HIGHEST) KioCG - 去除不需要的内容
 	public void onRegen(EntityRegainHealthEvent event) {
 		if (event.getEntity() instanceof Player) {
 			if (event.getRegainReason().equals(RegainReason.SATIATED)) {
@@ -50,6 +50,7 @@ public class Regeneration implements Listener {
 	}
 	
 	public void startRegen() {
+		if (true) return; // KioCG - 去除不需要的内容
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
 			if (OptionL.getBoolean(Option.REGENERATION_CUSTOM_REGEN_MECHANICS)) {
 				for (Player player : Bukkit.getOnlinePlayers()) {
@@ -95,6 +96,7 @@ public class Regeneration implements Listener {
 	}
 	
 	public void startSaturationRegen() {
+		if (true) return; // KioCG - 去除不需要的内容
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
 			if (OptionL.getBoolean(Option.REGENERATION_CUSTOM_REGEN_MECHANICS)) {
 				for (Player player : Bukkit.getOnlinePlayers()) {

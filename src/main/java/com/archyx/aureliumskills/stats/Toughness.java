@@ -8,6 +8,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 public class Toughness {
 
 	public static void onDamage(EntityDamageByEntityEvent event, PlayerData playerData) {
+		if (true) return; // KioCG - 去除不需要的内容
 		double toughness = playerData.getStatLevel(Stats.TOUGHNESS) * OptionL.getDouble(Option.TOUGHNESS_NEW_MODIFIER);
 		event.setDamage(event.getDamage() * (1 - (-1.0 * Math.pow(1.01, -1.0 * toughness) + 1)));
 	}

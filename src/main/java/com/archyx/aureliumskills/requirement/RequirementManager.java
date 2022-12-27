@@ -26,6 +26,7 @@ public class RequirementManager implements Listener {
     }
 
     public void load() {
+        if (true) return; // KioCG - 去除不需要的内容
         FileConfiguration config = plugin.getConfig();
         this.globalRequirements = new HashSet<>();
         for (ModifierType type : ModifierType.values()) {
@@ -71,12 +72,13 @@ public class RequirementManager implements Listener {
         return matched;
     }
 
-    @EventHandler
+    // @EventHandler KioCG - 去除不需要的内容
     public void onQuit(PlayerQuitEvent event) {
         errorMessageTimer.remove(event.getPlayer().getUniqueId());
     }
 
     public void tickTimer() {
+        if (true) return; // KioCG - 去除不需要的内容
         new BukkitRunnable() {
             @Override
             public void run() {

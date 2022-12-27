@@ -48,7 +48,7 @@ public class ItemListener implements Listener {
         this.multipliers = new Multipliers(plugin);
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    // @EventHandler(priority = EventPriority.LOW) KioCG - 去除不需要的内容
     public void onJoin(PlayerDataLoadEvent event) {
         Player player = event.getPlayerData().getPlayer();
         ItemStack held = player.getInventory().getItemInMainHand();
@@ -91,7 +91,7 @@ public class ItemListener implements Listener {
 
     }
 
-    @EventHandler
+    // @EventHandler KioCG - 去除不需要的内容
     public void onLeave(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         heldItems.remove(player.getUniqueId());
@@ -99,6 +99,7 @@ public class ItemListener implements Listener {
     }
 
     public void scheduleTask() {
+        if (true) return; // KioCG - 去除不需要的内容
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -179,7 +180,7 @@ public class ItemListener implements Listener {
         scheduleOffHandTask();
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    // @EventHandler(priority = EventPriority.MONITOR) KioCG - 去除不需要的内容
     public void onSwap(PlayerSwapHandItemsEvent event) {
         if (!event.isCancelled()) { // Make sure event is not cancelled
             if (OptionL.getBoolean(Option.MODIFIER_ITEM_ENABLE_OFF_HAND)) { // Check off hand support is enabled
@@ -260,6 +261,7 @@ public class ItemListener implements Listener {
     }
 
     public void scheduleOffHandTask() {
+        if (true) return; // KioCG - 去除不需要的内容
         new BukkitRunnable() {
             @Override
             public void run() {

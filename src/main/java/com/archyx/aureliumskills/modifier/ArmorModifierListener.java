@@ -43,7 +43,7 @@ public class ArmorModifierListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    // @EventHandler(priority = EventPriority.LOWEST) KioCG - 去除不需要的内容
     public void onJoin(PlayerDataLoadEvent event) {
         Player player = event.getPlayerData().getPlayer();
         PlayerData playerData = event.getPlayerData();
@@ -66,7 +66,7 @@ public class ArmorModifierListener implements Listener {
         }
     }
 
-    @EventHandler
+    // @EventHandler KioCG - 去除不需要的内容
     public void onEquip(ArmorEquipEvent event) {
         if (OptionL.getBoolean(Option.MODIFIER_ARMOR_TIMER_ENABLED)) return; // Don't use if timer is enabled
         Player player = event.getPlayer();
@@ -99,6 +99,7 @@ public class ArmorModifierListener implements Listener {
 
     // Timer based detection
     private void startTimer() {
+        if (true) return; // KioCG - 去除不需要的内容
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -161,7 +162,7 @@ public class ArmorModifierListener implements Listener {
         }.runTaskTimer(plugin, 0L, OptionL.getInt(Option.MODIFIER_ARMOR_TIMER_CHECK_PERIOD));
     }
 
-    @EventHandler
+    // @EventHandler KioCG - 去除不需要的内容
     public void onLeave(PlayerQuitEvent event) {
         storedArmor.remove(event.getPlayer().getUniqueId());
     }

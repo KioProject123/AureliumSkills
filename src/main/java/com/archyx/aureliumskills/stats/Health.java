@@ -39,24 +39,24 @@ public class Health implements Listener {
 		this.agilityAbilities = new AgilityAbilities(plugin);
 	}
 
-	@EventHandler
+	// @EventHandler KioCG - 去除不需要的内容
 	public void onJoin(PlayerJoinEvent event) {
 		applyScaling(event.getPlayer());
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	// @EventHandler(priority = EventPriority.HIGHEST) KioCG - 去除不需要的内容
 	public void onLoad(PlayerDataLoadEvent event) {
 		setHealth(event.getPlayerData().getPlayer());
 	}
 
 	public void reload(Player player) {
 		if (player != null) {
-			setHealth(player);
+			// setHealth(player);
 			agilityAbilities.removeFleeting(player);
 		}
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	// @EventHandler(priority = EventPriority.HIGHEST) KioCG - 去除不需要的内容
 	public void worldChange(PlayerChangedWorldEvent event) {
 		Player player = event.getPlayer();
 		if (plugin.getWorldManager().isInDisabledWorld(player.getLocation()) && !plugin.getWorldManager().isDisabledWorld(event.getFrom())) {
@@ -165,6 +165,7 @@ public class Health implements Listener {
 	}
 
 	public void loadHearts(FileConfiguration config) {
+		if (true) return; // KioCG - 去除不需要的内容
 		// Load default hearts
 		this.hearts.clear();
 		this.hearts.put(10, 0.0);

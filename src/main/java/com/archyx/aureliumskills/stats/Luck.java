@@ -36,18 +36,19 @@ public class Luck implements Listener {
 		this.plugin = plugin;
 	}
 
-	@EventHandler
+	// @EventHandler KioCG - 去除不需要的内容
 	public void onJoin(PlayerDataLoadEvent event) {
 		setLuck(event.getPlayerData().getPlayer());
 	}
 	
 	public void reload(Player player) {
+		if (true) return; // KioCG - 去除不需要的内容
 		if (player != null) {
 			setLuck(player);
 		}
 	}
 
-	@EventHandler
+	// @EventHandler KioCG - 去除不需要的内容
 	public void worldChange(PlayerChangedWorldEvent event) {
 		setLuck(event.getPlayer());
 	}
@@ -77,7 +78,7 @@ public class Luck implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	// @EventHandler(priority = EventPriority.HIGHEST) KioCG - 去除不需要的内容
 	@SuppressWarnings("deprecation")
 	public void onBlockBreak(BlockBreakEvent event) {
 		if (OptionL.getBoolean(Option.LUCK_DOUBLE_DROP_ENABLED) && !event.isCancelled()) {

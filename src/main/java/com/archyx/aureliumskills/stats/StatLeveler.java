@@ -15,6 +15,7 @@ public class StatLeveler {
 	}
 
 	public void reloadStat(Player player, Stat stat) {
+		if (true) return; // KioCG - 去除不需要的内容
 		if (stat.equals(Stats.HEALTH)) {
 			plugin.getHealth().reload(player);
 		}

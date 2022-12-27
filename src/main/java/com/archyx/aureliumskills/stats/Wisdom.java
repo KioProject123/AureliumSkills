@@ -21,7 +21,7 @@ public class Wisdom implements Listener {
 		this.plugin = plugin;
 	}
 
-	@EventHandler(priority = EventPriority.LOW)
+	// @EventHandler(priority = EventPriority.LOW) KioCG - 去除不需要的内容
 	public void onPlayerExpChange(PlayerExpChangeEvent event) {
 		Player player = event.getPlayer();
 		//Check for disabled world
@@ -33,7 +33,7 @@ public class Wisdom implements Listener {
 		event.setAmount((int) (event.getAmount() * (1 + (playerData.getStatLevel(Stats.WISDOM) * OptionL.getDouble(Option.WISDOM_EXPERIENCE_MODIFIER)))));
 	}
 	
-	@EventHandler
+	// @EventHandler KioCG - 去除不需要的内容
 	public void onAnvilPrepare(PrepareAnvilEvent event) {
 		PlayerData playerData = null;
 		//Finds the viewer with the highest wisdom level

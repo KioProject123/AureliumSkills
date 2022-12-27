@@ -223,7 +223,7 @@ public class AureliumSkills extends JavaPlugin {
 		// Load health
 		Health health = new Health(this);
 		this.health = health;
-		getServer().getPluginManager().registerEvents(health, this);
+		// getServer().getPluginManager().registerEvents(health, this); KioCG - 去除不需要的内容
 		// Load config
 		loadConfig();
 		this.requirementManager = new RequirementManager(this);
@@ -276,7 +276,7 @@ public class AureliumSkills extends JavaPlugin {
 		registerAndLoadMenus();
 		// Load stats
 		Regeneration regeneration = new Regeneration(this);
-		getServer().getPluginManager().registerEvents(regeneration, this);
+		// getServer().getPluginManager().registerEvents(regeneration, this); KioCG - 去除不需要的内容
 		regeneration.startRegen();
 		regeneration.startSaturationRegen();
 		// Load Action Bar
@@ -575,8 +575,8 @@ public class AureliumSkills extends JavaPlugin {
 		pm.registerEvents(new HealingLeveler(this), this);
 		forgingLeveler = new ForgingLeveler(this);
 		pm.registerEvents(forgingLeveler, this);
-		pm.registerEvents(new Luck(this), this);
-		pm.registerEvents(new Wisdom(this), this);
+		// pm.registerEvents(new Luck(this), this); KioCG - 去除不需要的内容
+		// pm.registerEvents(new Wisdom(this), this); KioCG - 去除不需要的内容
 		pm.registerEvents(new FarmingAbilities(this), this);
 		pm.registerEvents(new ForagingAbilities(this), this);
 		pm.registerEvents(new MiningAbilities(this), this);
@@ -599,11 +599,11 @@ public class AureliumSkills extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(manaManager, this);
 		manaManager.startRegen();
 		ItemListener itemListener = new ItemListener(this);
-		pm.registerEvents(itemListener, this);
+		// pm.registerEvents(itemListener, this); KioCG - 去除不需要的内容
 		itemListener.scheduleTask();
-		pm.registerEvents(new ArmorListener(OptionL.getList(Option.MODIFIER_ARMOR_EQUIP_BLOCKED_MATERIALS)), this);
-		pm.registerEvents(new ArmorModifierListener(this), this);
-		pm.registerEvents(new RequirementListener(this), this);
+		// pm.registerEvents(new ArmorListener(OptionL.getList(Option.MODIFIER_ARMOR_EQUIP_BLOCKED_MATERIALS)), this); KioCG - 去除不需要的内容
+		// pm.registerEvents(new ArmorModifierListener(this), this); KioCG - 去除不需要的内容
+		// pm.registerEvents(new RequirementListener(this), this); KioCG - 去除不需要的内容
 		this.actionBar = new ActionBar(this);
 		pm.registerEvents(actionBar, this);
 		pm.registerEvents(new RegionListener(this), this);

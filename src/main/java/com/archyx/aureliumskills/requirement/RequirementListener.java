@@ -36,7 +36,7 @@ public class RequirementListener implements Listener {
         this.requirements = new Requirements(plugin);
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    // @EventHandler(priority = EventPriority.HIGH) KioCG - 去除不需要的内容
     public void onEquip(ArmorEquipEvent event) {
         if (event.isCancelled()) return;
         Player player = event.getPlayer();
@@ -83,7 +83,7 @@ public class RequirementListener implements Listener {
                 , "{requirements}", requirementsString.toString()));
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    // @EventHandler(priority = EventPriority.HIGH) KioCG - 去除不需要的内容
     public void onBlockBreak(BlockBreakEvent event) {
         if (event.isCancelled()) return;
         if (OptionL.getBoolean(Option.REQUIREMENT_ITEM_PREVENT_TOOL_USE)) {
@@ -94,7 +94,7 @@ public class RequirementListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    // @EventHandler(priority = EventPriority.HIGH) KioCG - 去除不需要的内容
     public void onPlace(BlockPlaceEvent event) {
         if (event.isCancelled()) return;
         if (OptionL.getBoolean(Option.REQUIREMENT_ITEM_PREVENT_BLOCK_PLACE)) {
@@ -105,7 +105,7 @@ public class RequirementListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    // @EventHandler(priority = EventPriority.HIGH) KioCG - 去除不需要的内容
     public void onAttack(EntityDamageByEntityEvent event) {
         if (event.isCancelled()) return;
         if (OptionL.getBoolean(Option.REQUIREMENT_ITEM_PREVENT_WEAPON_USE)) {
@@ -118,7 +118,7 @@ public class RequirementListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    // @EventHandler(priority = EventPriority.HIGH) KioCG - 去除不需要的内容
     public void onShoot(EntityShootBowEvent event) {
         if (event.isCancelled()) return;
         if (!OptionL.getBoolean(Option.REQUIREMENT_ITEM_PREVENT_WEAPON_USE)) return;
@@ -132,7 +132,7 @@ public class RequirementListener implements Listener {
         checkItemRequirements(player, item, event);
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    // @EventHandler(priority = EventPriority.HIGH) KioCG - 去除不需要的内容
     public void onInteract(PlayerInteractEvent event) {
         if (event.useItemInHand() == Event.Result.DENY) return;
         if (!OptionL.getBoolean(Option.REQUIREMENT_ITEM_PREVENT_INTERACT)) return;
