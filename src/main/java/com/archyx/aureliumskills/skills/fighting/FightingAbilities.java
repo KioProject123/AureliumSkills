@@ -146,7 +146,7 @@ public class FightingAbilities extends AbilityProvider implements Listener {
                         // Apply bleed
                         double damage = plugin.getAbilityManager().getValue2(Ability.BLEED, playerData.getAbilityLevel(Ability.BLEED));
                         double healthBefore = entity.getHealth();
-                        entity.damage(damage);
+                        entity.damage(damage, playerData.getPlayer());
                         double healthAfter = entity.getHealth();
                         if (healthAfter != healthBefore) { // Only display particles if damage was actually done
                             displayBleedParticles(entity);
