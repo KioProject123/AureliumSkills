@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.LinkedList;
@@ -61,7 +62,7 @@ public class Terraform extends ReadiedManaAbility {
         if (!hasTag(source, SourceTag.TERRAFORM_APPLICABLE)) return;
         // Apply if activated
         if (isActivated(player)) {
-            terraformBreak(player, block);
+            if (isHoldingMaterial(player)) terraformBreak(player, block);
             return;
         }
         //Checks if speed mine is ready
@@ -80,7 +81,11 @@ public class Terraform extends ReadiedManaAbility {
         while ((block = toCheck.poll()) != null && count < 61) {
             if (block.getType() == material) {
                 block.setMetadata("AureliumSkills-Terraform", new FixedMetadataValue(plugin, true));
-                breakBlock(player, block);
+                if (breakBlock(player, block)) {
+                    if (player.getInventory().getItemInMainHand().damage(1)) {
+                        return;
+                    }
+                }
                 for (BlockFace face : faces) {
                     toCheck.add(block.getRelative(face));
                 }
@@ -89,17 +94,20 @@ public class Terraform extends ReadiedManaAbility {
         }
     }
 
-    private void breakBlock(Player player, Block block) {
+    private boolean breakBlock(Player player, Block block) {
         if (!plugin.getTownySupport().canBreak(player, block)) {
             block.removeMetadata("AureliumSkills-Terraform", plugin);
-            return;
+            return false;
         }
+        boolean breakBlock = false;
         TerraformBlockBreakEvent event = new TerraformBlockBreakEvent(block, player);
         Bukkit.getPluginManager().callEvent(event);
         if (!event.isCancelled()) {
             block.breakNaturally(player.getInventory().getItemInMainHand());
+            breakBlock = true;
         }
         block.removeMetadata("AureliumSkills-Terraform", plugin);
+        return breakBlock;
     }
 
 }

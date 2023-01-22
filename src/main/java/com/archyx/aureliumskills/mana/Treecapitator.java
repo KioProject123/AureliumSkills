@@ -14,6 +14,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class Treecapitator extends ReadiedManaAbility {
@@ -61,7 +63,7 @@ public class Treecapitator extends ReadiedManaAbility {
         if (isTrunk(block) || block.getType().toString().contains("STRIPPED")) {
             Player player = event.getPlayer();
             if (isActivated(player)) {
-                breakTree(player, block);
+                if (isHoldingMaterial(player)) breakTree(player, block);
                 return;
             }
             if (isReady(player) && isHoldingMaterial(player) && hasEnoughMana(player)) {
@@ -77,13 +79,16 @@ public class Treecapitator extends ReadiedManaAbility {
         if (plugin.getManaAbilityManager().isActivated(player.getUniqueId(), MAbility.TREECAPITATOR)) {
             ForagingSource source = ForagingSource.getSource(block);
             if (source != null) {
-                breakBlock(player, block, new TreecapitatorTree(plugin, block));
+                breakBlock(player, player.getInventory().getItemInMainHand(), block, new TreecapitatorTree(plugin, block));
             }
         }
     }
 
-    private void breakBlock(Player player, Block block, TreecapitatorTree tree) {
+    private void breakBlock(Player player, ItemStack handItem, Block block, TreecapitatorTree tree) {
         if (tree.getBlocksBroken() > tree.getMaxBlocks()) {
+            return;
+        }
+        if (player.getInventory().getItemInMainHand() != handItem) {
             return;
         }
         for (Block rel : BlockFaceUtil.getSurroundingBlocks(block)) {
@@ -100,6 +105,9 @@ public class Treecapitator extends ReadiedManaAbility {
             if (source != null) {
                 plugin.getLeveler().addXp(player, Skills.FORAGING, getXp(player, source, Ability.FORAGER));
             }
+            if (handItem.damage(1)) {
+                return;
+            }
             // Continue breaking blocks
             Block originalBlock = tree.getOriginalBlock();
             if (rel.getX() > originalBlock.getX() + 6 || rel.getZ() > originalBlock.getZ() + 6 || rel.getY() > originalBlock.getY() + 31) {
@@ -108,7 +116,7 @@ public class Treecapitator extends ReadiedManaAbility {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    breakBlock(player, rel, tree);
+                    breakBlock(player, handItem, rel, tree);
                 }
             }.runTaskLater(plugin, 1);
         }
