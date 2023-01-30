@@ -28,7 +28,7 @@ public class ChargedShot extends ManaAbilityProvider {
 
     public ChargedShot(AureliumSkills plugin) {
         super(plugin, MAbility.CHARGED_SHOT, ManaAbilityMessage.CHARGED_SHOT_SHOOT, null);
-        tickChargedShotCooldown();
+        // tickChargedShotCooldown(); KioCG - 去除不需要的内容
     }
 
     @EventHandler
