@@ -8,6 +8,7 @@ import com.archyx.aureliumskills.lang.Lang;
 import com.archyx.aureliumskills.skills.Skill;
 import com.archyx.aureliumskills.skills.Skills;
 import com.archyx.aureliumskills.util.math.BigNumber;
+import com.archyx.aureliumskills.util.math.NumberUtil;
 import com.archyx.aureliumskills.util.math.RomanNumber;
 import com.archyx.aureliumskills.util.text.TextUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -158,7 +159,7 @@ public class SkillBossBar implements Listener {
 
     private void handleExistingBossBar(BossBar bossBar, Player player, Skill skill, double currentXp, double levelXp, double xpGained, int level, boolean maxed) {
         Locale locale = plugin.getLang().getLocale(player);
-        String bossBarText = getBossBarText(player, skill, currentXp, (long) levelXp, (long) xpGained, level, maxed, locale);
+        String bossBarText = getBossBarText(player, skill, currentXp, (long) levelXp, xpGained, level, maxed, locale);
 
         bossBar.setTitle(bossBarText); // Update the boss bar to the new text value
         // Calculate xp progress
@@ -171,7 +172,7 @@ public class SkillBossBar implements Listener {
         bossBar.setVisible(true); // Show the boss bar to the player
     }
 
-    private String getBossBarText(Player player, Skill skill, double currentXp, long levelXp, long xpGained, int level, boolean maxed, Locale locale) {
+    private String getBossBarText(Player player, Skill skill, double currentXp, long levelXp, double xpGained, int level, boolean maxed, Locale locale) {
         String bossBarText;
         String currentXpText = getCurrentXpText(currentXp);
         if (!maxed) {
@@ -179,16 +180,24 @@ public class SkillBossBar implements Listener {
                     "{skill}", skill.getDisplayName(locale),
                     "{level}", RomanNumber.toRoman(level),
                     "{current_xp}", currentXpText,
-                    "{level_xp}", BigNumber.withSuffix(levelXp),
-                    "{xp_gained}", BigNumber.withSuffix(xpGained)));
+                    "{level_xp}", getLevelXpText(levelXp),
+                    "{xp_gained}", NumberUtil.format1(xpGained)));
         } else {
             bossBarText = setPlaceholders(player, TextUtil.replace(Lang.getMessage(ActionBarMessage.BOSS_BAR_MAXED, locale),
                     "{skill}", skill.getDisplayName(locale),
                     "{level}", RomanNumber.toRoman(level),
                     "{current_xp}", currentXpText,
-                    "{xp_gained}", BigNumber.withSuffix(xpGained)));
+                    "{xp_gained}", NumberUtil.format1(xpGained)));
         }
         return bossBarText;
+    }
+
+    private String getLevelXpText(long levelXp) {
+        if (OptionL.getBoolean(Option.BOSS_BAR_USE_SUFFIX)) {
+            return BigNumber.withSuffix(levelXp);
+        } else {
+            return String.valueOf(levelXp);
+        }
     }
 
     // Get the formatted text for the current player xp depending on rounding option
@@ -247,7 +256,7 @@ public class SkillBossBar implements Listener {
                         if (!mode.equals("single")) {
                             Map<Skill, Integer> multiCurrentActions = currentActions.get(playerId);
                             if (multiCurrentActions != null) {
-                                if (currentAction == multiCurrentActions.get(skill)) {
+                                if (currentAction == multiCurrentActions.getOrDefault(skill, 0)) {
                                     if (bossBar != null) {
                                         bossBar.setVisible(false);
                                     }
