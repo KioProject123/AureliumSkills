@@ -29,3 +29,5 @@ buildNumber.properties
 .flattened-pom.xml
 
 build.xml
+
+.github/
