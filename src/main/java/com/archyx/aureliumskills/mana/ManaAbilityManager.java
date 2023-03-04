@@ -177,26 +177,26 @@ public class ManaAbilityManager implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                for (UUID id : cooldowns.keySet()) {
-                    Map<MAbility, Integer> abilityCooldowns = cooldowns.get(id);
+                for (Map.Entry<UUID, Map<MAbility, Integer>> entry : cooldowns.entrySet()) {
+                    Map<MAbility, Integer> abilityCooldowns = entry.getValue();
                     if (abilityCooldowns != null) {
-                        for (MAbility ab : abilityCooldowns.keySet()) {
-                            int cooldown = abilityCooldowns.get(ab);
+                        for (Map.Entry<MAbility, Integer> entry1 : abilityCooldowns.entrySet()) {
+                            int cooldown = entry1.getValue();
                             if (cooldown >= 2) {
-                                abilityCooldowns.put(ab, cooldown - 2);
+                                abilityCooldowns.put(entry1.getKey(), cooldown - 2);
                             } else if (cooldown == 1) {
-                                abilityCooldowns.put(ab, 0);
+                                abilityCooldowns.put(entry1.getKey(), 0);
                             }
                             if (cooldown == 2 || cooldown == 1) {
-                                PlayerData playerData = plugin.getPlayerManager().getPlayerData(id);
+                                PlayerData playerData = plugin.getPlayerManager().getPlayerData(entry.getKey());
                                 if (playerData != null) {
-                                    ManaAbilityRefreshEvent event = new ManaAbilityRefreshEvent(playerData.getPlayer(), ab);
+                                    ManaAbilityRefreshEvent event = new ManaAbilityRefreshEvent(playerData.getPlayer(), entry1.getKey());
                                     Bukkit.getPluginManager().callEvent(event);
                                 }
                             }
                         }
                     } else {
-                        cooldowns.put(id, new HashMap<>());
+                        cooldowns.put(entry.getKey(), new HashMap<>());
                     }
                 }
             }
@@ -204,17 +204,17 @@ public class ManaAbilityManager implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                for (UUID id : errorTimer.keySet()) {
-                    Map<MAbility, Integer> errorTimers = errorTimer.get(id);
+                for (Map.Entry<UUID, Map<MAbility, Integer>> entry : errorTimer.entrySet()) {
+                    Map<MAbility, Integer> errorTimers = entry.getValue();
                     if (errorTimers != null) {
-                        for (MAbility ab : errorTimers.keySet()) {
-                            int timer = errorTimers.get(ab);
+                        for (Map.Entry<MAbility, Integer> entry1 : errorTimers.entrySet()) {
+                            int timer = entry1.getValue();
                             if (timer > 0) {
-                                errorTimers.put(ab, timer - 1);
+                                errorTimers.put(entry1.getKey(), timer - 1);
                             }
                         }
                     } else {
-                        errorTimer.put(id, new HashMap<>());
+                        errorTimer.put(entry.getKey(), new HashMap<>());
                     }
                 }
             }
