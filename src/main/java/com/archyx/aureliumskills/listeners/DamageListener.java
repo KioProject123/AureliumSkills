@@ -14,8 +14,6 @@ import com.archyx.aureliumskills.skills.farming.FarmingAbilities;
 import com.archyx.aureliumskills.skills.fighting.FightingAbilities;
 import com.archyx.aureliumskills.skills.foraging.ForagingAbilities;
 import com.archyx.aureliumskills.skills.mining.MiningAbilities;
-import com.archyx.aureliumskills.stats.Strength;
-import com.archyx.aureliumskills.stats.Toughness;
 import com.archyx.aureliumskills.util.mechanics.DamageType;
 import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Material;
@@ -27,7 +25,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class DamageListener implements Listener {
 
-    private final Strength strength;
+//    private final Strength strength;
     private final Critical critical;
     private final AureliumSkills plugin;
     private final ExcavationAbilities excavationAbilities;
@@ -39,7 +37,7 @@ public class DamageListener implements Listener {
     private final DefenseAbilities defenseAbilities;
 
     public DamageListener(AureliumSkills plugin, DefenseAbilities defenseAbilities, FightingAbilities fightingAbilities) {
-        strength = new Strength();
+//        strength = new Strength();
         this.plugin = plugin;
         this.critical = new Critical(plugin);
         this.excavationAbilities = new ExcavationAbilities(plugin);
@@ -73,8 +71,8 @@ public class DamageListener implements Listener {
 
             DamageType damageType = getDamageType(event, player);
 
-            //Applies strength
-            strength.strength(event, playerData, damageType);
+//            //Applies strength
+//            strength.strength(event, playerData, damageType);
 
             //Applies master abilities
             switch (damageType) {
@@ -141,8 +139,8 @@ public class DamageListener implements Listener {
         }
         if (event.isCancelled()) return;
 
-        // Handles toughness
-        Toughness.onDamage(event, playerData);
+//        // Handles toughness
+//        Toughness.onDamage(event, playerData);
 
         // Handles mob master
         defenseAbilities.mobMaster(event, playerData);

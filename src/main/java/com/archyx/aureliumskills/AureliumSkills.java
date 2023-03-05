@@ -31,13 +31,10 @@ import com.archyx.aureliumskills.mana.ManaManager;
 import com.archyx.aureliumskills.menus.MenuFileManager;
 import com.archyx.aureliumskills.menus.MenuRegistrar;
 import com.archyx.aureliumskills.menus.sources.SorterItem;
-import com.archyx.aureliumskills.modifier.ArmorModifierListener;
-import com.archyx.aureliumskills.modifier.ItemListener;
 import com.archyx.aureliumskills.modifier.ModifierManager;
 import com.archyx.aureliumskills.region.RegionBlockListener;
 import com.archyx.aureliumskills.region.RegionListener;
 import com.archyx.aureliumskills.region.RegionManager;
-import com.archyx.aureliumskills.requirement.RequirementListener;
 import com.archyx.aureliumskills.requirement.RequirementManager;
 import com.archyx.aureliumskills.rewards.RewardManager;
 import com.archyx.aureliumskills.skills.Skill;
@@ -152,7 +149,7 @@ public class AureliumSkills extends JavaPlugin {
 	private ModifierManager modifierManager;
 	private Lang lang;
 	private Leveler leveler;
-	private Health health;
+//	private Health health;
 	private LeaderboardManager leaderboardManager;
 	private RegionManager regionManager;
 	private StatRegistry statRegistry;
@@ -221,10 +218,10 @@ public class AureliumSkills extends JavaPlugin {
 			getServer().getPluginManager().registerEvents(new SlimefunSupport(this), this);
 			getLogger().info("Slimefun Support Enabled!");
 		}
-		// Load health
-		Health health = new Health(this);
-		this.health = health;
-		// getServer().getPluginManager().registerEvents(health, this); KioCG - 去除不需要的内容
+//		// Load health
+//		Health health = new Health(this);
+//		this.health = health;
+//		getServer().getPluginManager().registerEvents(health, this);
 		// Load config
 		loadConfig();
 		this.requirementManager = new RequirementManager(this);
@@ -275,11 +272,11 @@ public class AureliumSkills extends JavaPlugin {
 		// Load menus
 		slate = new Slate(this);
 		registerAndLoadMenus();
-		// Load stats
-		Regeneration regeneration = new Regeneration(this);
-		// getServer().getPluginManager().registerEvents(regeneration, this); KioCG - 去除不需要的内容
-		regeneration.startRegen();
-		regeneration.startSaturationRegen();
+//		// Load stats
+//		Regeneration regeneration = new Regeneration(this);
+//		getServer().getPluginManager().registerEvents(regeneration, this);
+//		regeneration.startRegen();
+//		regeneration.startSaturationRegen();
 		// Load Action Bar
 		if (protocolLibEnabled) {
 			protocolLibSupport = new ProtocolLibSupport();
@@ -584,8 +581,8 @@ public class AureliumSkills extends JavaPlugin {
 		pm.registerEvents(new HealingLeveler(this), this);
 		forgingLeveler = new ForgingLeveler(this);
 		pm.registerEvents(forgingLeveler, this);
-		// pm.registerEvents(new Luck(this), this); KioCG - 去除不需要的内容
-		// pm.registerEvents(new Wisdom(this), this); KioCG - 去除不需要的内容
+//		pm.registerEvents(new Luck(this), this);
+//		pm.registerEvents(new Wisdom(this), this);
 		pm.registerEvents(new FarmingAbilities(this), this);
 		pm.registerEvents(new ForagingAbilities(this), this);
 		pm.registerEvents(new MiningAbilities(this), this);
@@ -607,12 +604,12 @@ public class AureliumSkills extends JavaPlugin {
 		manaManager = new ManaManager(this);
 		getServer().getPluginManager().registerEvents(manaManager, this);
 		manaManager.startRegen();
-		ItemListener itemListener = new ItemListener(this);
-		// pm.registerEvents(itemListener, this); KioCG - 去除不需要的内容
-		itemListener.scheduleTask();
-		// pm.registerEvents(new ArmorListener(OptionL.getList(Option.MODIFIER_ARMOR_EQUIP_BLOCKED_MATERIALS)), this); KioCG - 去除不需要的内容
-		// pm.registerEvents(new ArmorModifierListener(this), this); KioCG - 去除不需要的内容
-		// pm.registerEvents(new RequirementListener(this), this); KioCG - 去除不需要的内容
+//		ItemListener itemListener = new ItemListener(this);
+//		pm.registerEvents(itemListener, this);
+//		itemListener.scheduleTask();
+//		pm.registerEvents(new ArmorListener(OptionL.getList(Option.MODIFIER_ARMOR_EQUIP_BLOCKED_MATERIALS)), this);
+//		pm.registerEvents(new ArmorModifierListener(this), this);
+//		pm.registerEvents(new RequirementListener(this), this);
 		this.actionBar = new ActionBar(this);
 		pm.registerEvents(actionBar, this);
 		pm.registerEvents(new RegionListener(this), this);
@@ -789,9 +786,9 @@ public class AureliumSkills extends JavaPlugin {
 		return slimefunEnabled;
 	}
 
-	public Health getHealth() {
-		return health;
-	}
+//	public Health getHealth() {
+//		return health;
+//	}
 
 	public StorageProvider getStorageProvider() {
 		return storageProvider;

@@ -10,7 +10,6 @@ import com.archyx.aureliumskills.mana.MAbility;
 import com.archyx.aureliumskills.modifier.Multiplier;
 import com.archyx.aureliumskills.modifier.StatModifier;
 import com.archyx.aureliumskills.skills.Skill;
-import com.archyx.aureliumskills.stats.Luck;
 import com.archyx.aureliumskills.stats.Stat;
 import com.archyx.aureliumskills.stats.Stats;
 import com.archyx.aureliumskills.util.misc.KeyIntPair;
@@ -155,14 +154,14 @@ public class PlayerData {
         }
         statModifiers.put(modifier.getName(), modifier);
         setStatLevel(modifier.getStat(), getStatLevel(modifier.getStat()) + modifier.getValue());
-        // Reloads stats
-        if (reload) {
-            if (modifier.getStat() == Stats.HEALTH) {
-                plugin.getHealth().reload(player);
-            } else if (modifier.getStat() == Stats.LUCK) {
-                new Luck(plugin).reload(player);
-            }
-        }
+//        // Reloads stats
+//        if (reload) {
+//            if (modifier.getStat() == Stats.HEALTH) {
+//                plugin.getHealth().reload(player);
+//            } else if (modifier.getStat() == Stats.LUCK) {
+//                new Luck(plugin).reload(player);
+//            }
+//        }
     }
 
     public boolean removeStatModifier(String name) {
@@ -174,14 +173,14 @@ public class PlayerData {
         if (modifier == null) return false;
         setStatLevel(modifier.getStat(), statLevels.get(modifier.getStat()) - modifier.getValue());
         statModifiers.remove(name);
-        // Reloads stats
-        if (reload) {
-            if (modifier.getStat() == Stats.HEALTH) {
-                plugin.getHealth().reload(player);
-            } else if (modifier.getStat() == Stats.LUCK) {
-                new Luck(plugin).reload(player);
-            }
-        }
+//        // Reloads stats
+//        if (reload) {
+//            if (modifier.getStat() == Stats.HEALTH) {
+//                plugin.getHealth().reload(player);
+//            } else if (modifier.getStat() == Stats.LUCK) {
+//                new Luck(plugin).reload(player);
+//            }
+//        }
         return true;
     }
 

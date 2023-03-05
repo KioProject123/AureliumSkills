@@ -75,7 +75,7 @@ public class OptionL {
                 logger.warning("Missing value in config.yml: Option " + option.name() + " with path " + option.getPath() + " was not found, using default value instead!");
             }
         }
-        plugin.getHealth().loadHearts(config);
+//        plugin.getHealth().loadHearts(config);
         long end = System.currentTimeMillis();
         logger.info("Loaded " + loaded + " config options in " + (end - start) + " ms");
     }

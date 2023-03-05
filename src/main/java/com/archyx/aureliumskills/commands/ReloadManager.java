@@ -3,7 +3,6 @@ package com.archyx.aureliumskills.commands;
 import com.archyx.aureliumskills.AureliumSkills;
 import com.archyx.aureliumskills.lang.CommandMessage;
 import com.archyx.aureliumskills.lang.Lang;
-import com.archyx.aureliumskills.stats.Luck;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -51,12 +50,12 @@ public class ReloadManager {
         if (plugin.isWorldGuardEnabled()) {
             plugin.getWorldGuardSupport().loadRegions();
         }
-        // Recalculate health and luck stats
-        Luck luck = new Luck(plugin);
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            plugin.getHealth().reload(player);
-            luck.reload(player);
-        }
+//        // Recalculate health and luck stats
+//        Luck luck = new Luck(plugin);
+//        for (Player player : Bukkit.getOnlinePlayers()) {
+//            plugin.getHealth().reload(player);
+//            luck.reload(player);
+//        }
         // Resets all action bars
         plugin.getActionBar().resetActionBars();
         // Load boss bars

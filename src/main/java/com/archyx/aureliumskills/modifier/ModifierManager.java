@@ -24,7 +24,7 @@ public class ModifierManager {
     }
 
     public void reloadPlayer(Player player) {
-        if (true) return; // KioCG - 去除不需要的内容
+        /* KioCG - 删除不需要的内容
         PlayerData playerData = plugin.getPlayerManager().getPlayerData(player);
         Requirements requirements = new Requirements(plugin);
         Modifiers modifiers = new Modifiers(plugin);
@@ -100,5 +100,6 @@ public class ModifierManager {
                 statLeveler.reloadStat(player, stat);
             }
         }
+        */
     }
 }

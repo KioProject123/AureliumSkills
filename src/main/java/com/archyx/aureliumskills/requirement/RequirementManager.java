@@ -22,11 +22,11 @@ public class RequirementManager implements Listener {
     public RequirementManager(AureliumSkills plugin) {
         errorMessageTimer = new HashMap<>();
         this.plugin = plugin;
-        tickTimer();
+//        tickTimer();
     }
 
     public void load() {
-        if (true) return; // KioCG - 去除不需要的内容
+        /* KioCG - 删除不需要的内容
         FileConfiguration config = plugin.getConfig();
         this.globalRequirements = new HashSet<>();
         for (ModifierType type : ModifierType.values()) {
@@ -56,6 +56,7 @@ public class RequirementManager implements Listener {
                 }
             }
         }
+        */
     }
 
     public Set<GlobalRequirement> getGlobalRequirements() {
@@ -72,13 +73,12 @@ public class RequirementManager implements Listener {
         return matched;
     }
 
-    // @EventHandler KioCG - 去除不需要的内容
+    /* KioCG - 删除不需要的内容
     public void onQuit(PlayerQuitEvent event) {
         errorMessageTimer.remove(event.getPlayer().getUniqueId());
     }
 
     public void tickTimer() {
-        if (true) return; // KioCG - 去除不需要的内容
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -91,6 +91,7 @@ public class RequirementManager implements Listener {
             }
         }.runTaskTimer(plugin, 0, 5);
     }
+    */
 
     public Map<UUID, Integer> getErrorMessageTimer() {
         return errorMessageTimer;
