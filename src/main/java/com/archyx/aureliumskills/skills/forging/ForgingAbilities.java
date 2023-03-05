@@ -182,8 +182,8 @@ public class ForgingAbilities extends AbilityProvider implements Listener {
                 PlayerData playerData = plugin.getPlayerManager().getPlayerData(player);
                 if (playerData == null) return;
                 if (playerData.getAbilityLevel(Ability.ANVIL_MASTER) > 0) {
-                    int maxCost = (int) Math.round(getValue(Ability.ANVIL_MASTER, playerData));
-                    anvil.setMaximumRepairCost(maxCost);
+                    int maxCost = (int) Math.floor(getValue(Ability.ANVIL_MASTER, playerData));
+                    anvil.setMaximumRepairCost(maxCost + 1);
                 }
             }
         }
