@@ -103,7 +103,7 @@ public class Treecapitator extends ReadiedManaAbility {
             if (source != null) {
                 plugin.getLeveler().addXp(player, Skills.FORAGING, getXp(player, source, Ability.FORAGER));
             }
-            if (player.getInventory().getItemInMainHand().damage(1)) {
+            if (player.getInventory().getItemInMainHand().damage()) {
                 return;
             }
             // Continue breaking blocks

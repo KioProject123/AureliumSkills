@@ -82,7 +82,7 @@ public class Terraform extends ReadiedManaAbility {
             if (block.getType() == material) {
                 block.setMetadata("AureliumSkills-Terraform", new FixedMetadataValue(plugin, true));
                 if (breakBlock(player, block)) {
-                    if (player.getInventory().getItemInMainHand().damage(1)) {
+                    if (player.getInventory().getItemInMainHand().damage()) {
                         return;
                     }
                 }

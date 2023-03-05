@@ -74,6 +74,7 @@ public class RequirementManager implements Listener {
     }
 
     /* KioCG - 删除不需要的内容
+    @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         errorMessageTimer.remove(event.getPlayer().getUniqueId());
     }
