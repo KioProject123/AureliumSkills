@@ -19,6 +19,9 @@ repositories {
         url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     }
     maven {
+        url = uri("https://repo.purpurmc.org/snapshots")
+    }
+    maven {
         url = uri("https://maven.enginehub.org/repo/")
     }
     maven {
@@ -48,7 +51,7 @@ dependencies {
     implementation("com.udojava:EvalEx:2.7")
     implementation("com.github.Archy-X:Slate:7a9fa2f588")
     implementation("com.github.Archy-X:LootManager:60d109fdde")
-    compileOnly("org.spigotmc:spigot-api:1.19.3-R0.1-SNAPSHOT")
+    compileOnly("org.purpurmc.purpur:purpur-api:1.19.3-R0.1-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.11.2")
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.5")
     compileOnly("com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.9")
