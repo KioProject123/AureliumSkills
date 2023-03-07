@@ -22,10 +22,10 @@ import java.util.*;
 
 public class ManaAbilityManager implements Listener {
 
-    private final Map<UUID, Map<MAbility, Integer>> cooldowns;
-    private final Map<UUID, Map<MAbility, Boolean>> ready;
-    private final Map<UUID, Map<MAbility, Boolean>> activated;
-    private final Map<UUID, Map<MAbility, Integer>> errorTimer;
+    private final Map<UUID, EnumMap<MAbility, Integer>> cooldowns;
+    private final Map<UUID, EnumMap<MAbility, Boolean>> ready;
+    private final Map<UUID, EnumMap<MAbility, Boolean>> activated;
+    private final Map<UUID, EnumMap<MAbility, Integer>> errorTimer;
 
     private final Map<MAbility, ManaAbilityProvider> providers;
 
@@ -71,17 +71,17 @@ public class ManaAbilityManager implements Listener {
     }
 
     public void setActivated(Player player, MAbility mAbility, boolean isActivated) {
-        Map<MAbility, Boolean> map = activated.computeIfAbsent(player.getUniqueId(), k -> new HashMap<>());
+        Map<MAbility, Boolean> map = activated.computeIfAbsent(player.getUniqueId(), k -> new EnumMap<>(MAbility.class));
         map.put(mAbility, isActivated);
     }
 
     //Sets cooldown
     public void setPlayerCooldown(UUID id, MAbility ability, int cooldown) {
-        Map<MAbility, Integer> abilityCooldowns = cooldowns.get(id);
+        EnumMap<MAbility, Integer> abilityCooldowns = cooldowns.get(id);
         if (abilityCooldowns != null) {
             abilityCooldowns.put(ability, cooldown);
         } else {
-            abilityCooldowns = new HashMap<>();
+            abilityCooldowns = new EnumMap<>(MAbility.class);
             abilityCooldowns.put(ability, cooldown);
             cooldowns.put(id, abilityCooldowns);
         }
@@ -101,7 +101,7 @@ public class ManaAbilityManager implements Listener {
     public int getPlayerCooldown(UUID id, MAbility ability) {
         Map<MAbility, Integer> abilityCooldowns = cooldowns.get(id);
         if (abilityCooldowns == null) {
-            cooldowns.put(id, new HashMap<>());
+            cooldowns.put(id, new EnumMap<>(MAbility.class));
             return 0;
         }
         Integer cooldown = abilityCooldowns.get(ability);
@@ -117,7 +117,7 @@ public class ManaAbilityManager implements Listener {
     public boolean isReady(UUID id, MAbility ability) {
         Map<MAbility, Boolean> readyMap = ready.get(id);
         if (readyMap == null) {
-            ready.put(id, new HashMap<>());
+            ready.put(id, new EnumMap<>(MAbility.class));
             return false;
         }
         Boolean readyValue = readyMap.get(ability);
@@ -133,7 +133,7 @@ public class ManaAbilityManager implements Listener {
     public int getErrorTimer(UUID id, MAbility ability) {
         Map<MAbility, Integer> errorTimers = errorTimer.get(id);
         if (errorTimers == null) {
-            errorTimer.put(id, new HashMap<>());
+            errorTimer.put(id, new EnumMap<>(MAbility.class));
             return 0;
         }
         Integer timer = errorTimers.get(ability);
@@ -147,7 +147,7 @@ public class ManaAbilityManager implements Listener {
 
     //Sets error timer
     public void setErrorTimer(UUID id, MAbility ability, int time) {
-        Map<MAbility, Integer> errorTimers = errorTimer.computeIfAbsent(id, k -> new HashMap<>());
+        Map<MAbility, Integer> errorTimers = errorTimer.computeIfAbsent(id, k -> new EnumMap<>(MAbility.class));
         errorTimers.put(ability, time);
     }
 
@@ -155,7 +155,7 @@ public class ManaAbilityManager implements Listener {
     public boolean isActivated(UUID id, MAbility ability) {
         Map<MAbility, Boolean> activatedMap = activated.get(id);
         if (activatedMap == null) {
-            activated.put(id, new HashMap<>());
+            activated.put(id, new EnumMap<>(MAbility.class));
             return false;
         }
         Boolean activatedValue = activatedMap.get(ability);
@@ -169,7 +169,7 @@ public class ManaAbilityManager implements Listener {
 
     //Sets ability ready status
     public void setReady(UUID id, MAbility ability, boolean isReady) {
-        Map<MAbility, Boolean> readyMap = ready.computeIfAbsent(id, k -> new HashMap<>());
+        Map<MAbility, Boolean> readyMap = ready.computeIfAbsent(id, k -> new EnumMap<>(MAbility.class));
         readyMap.put(ability, isReady);
     }
 
@@ -177,26 +177,28 @@ public class ManaAbilityManager implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                for (Map.Entry<UUID, Map<MAbility, Integer>> entry : cooldowns.entrySet()) {
+                for (Map.Entry<UUID, EnumMap<MAbility, Integer>> entry : cooldowns.entrySet()) {
+                    UUID id = entry.getKey();
                     Map<MAbility, Integer> abilityCooldowns = entry.getValue();
                     if (abilityCooldowns != null) {
-                        for (Map.Entry<MAbility, Integer> entry1 : abilityCooldowns.entrySet()) {
-                            int cooldown = entry1.getValue();
-                            if (cooldown >= 2) {
-                                abilityCooldowns.put(entry1.getKey(), cooldown - 2);
-                            } else if (cooldown == 1) {
-                                abilityCooldowns.put(entry1.getKey(), 0);
+                        for (Map.Entry<MAbility, Integer> entry2 : abilityCooldowns.entrySet()) {
+                            MAbility ab = entry2.getKey();
+                            int cooldown = entry2.getValue();
+                            if (cooldown > 20) {
+                                abilityCooldowns.put(ab, cooldown - 20);
+                            } else if (cooldown > 0) {
+                                abilityCooldowns.put(ab, 0);
                             }
-                            if (cooldown == 2 || cooldown == 1) {
-                                PlayerData playerData = plugin.getPlayerManager().getPlayerData(entry.getKey());
+                            if (cooldown > 0 && cooldown <= 20) {
+                                PlayerData playerData = plugin.getPlayerManager().getPlayerData(id);
                                 if (playerData != null) {
-                                    ManaAbilityRefreshEvent event = new ManaAbilityRefreshEvent(playerData.getPlayer(), entry1.getKey());
+                                    ManaAbilityRefreshEvent event = new ManaAbilityRefreshEvent(playerData.getPlayer(), ab);
                                     Bukkit.getPluginManager().callEvent(event);
                                 }
                             }
                         }
                     } else {
-                        cooldowns.put(entry.getKey(), new HashMap<>());
+                        cooldowns.put(id, new EnumMap<>(MAbility.class));
                     }
                 }
             }
@@ -204,17 +206,19 @@ public class ManaAbilityManager implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                for (Map.Entry<UUID, Map<MAbility, Integer>> entry : errorTimer.entrySet()) {
+                for (Map.Entry<UUID, EnumMap<MAbility, Integer>> entry : errorTimer.entrySet()) {
+                    UUID id = entry.getKey();
                     Map<MAbility, Integer> errorTimers = entry.getValue();
                     if (errorTimers != null) {
-                        for (Map.Entry<MAbility, Integer> entry1 : errorTimers.entrySet()) {
-                            int timer = entry1.getValue();
+                        for (Map.Entry<MAbility, Integer> entry2 : errorTimers.entrySet()) {
+                            MAbility ab = entry2.getKey();
+                            int timer = entry2.getValue();
                             if (timer > 0) {
-                                errorTimers.put(entry1.getKey(), timer - 1);
+                                errorTimers.put(ab, timer - 1);
                             }
                         }
                     } else {
-                        errorTimer.put(entry.getKey(), new HashMap<>());
+                        errorTimer.put(id, new EnumMap<>(MAbility.class));
                     }
                 }
             }
@@ -225,16 +229,16 @@ public class ManaAbilityManager implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         UUID id = event.getPlayer().getUniqueId();
         if (!cooldowns.containsKey(id)) {
-            cooldowns.put(id, new HashMap<>());
+            cooldowns.put(id, new EnumMap<>(MAbility.class));
         }
         if (!ready.containsKey(id)) {
-            ready.put(id, new HashMap<>());
+            ready.put(id, new EnumMap<>(MAbility.class));
         }
         if (!activated.containsKey(id)) {
-            activated.put(id, new HashMap<>());
+            activated.put(id, new EnumMap<>(MAbility.class));
         }
         if (!errorTimer.containsKey(id)) {
-            errorTimer.put(id, new HashMap<>());
+            errorTimer.put(id, new EnumMap<>(MAbility.class));
         }
     }
 
