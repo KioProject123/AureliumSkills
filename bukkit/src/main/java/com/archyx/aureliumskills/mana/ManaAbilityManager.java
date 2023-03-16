@@ -201,11 +201,7 @@ public class ManaAbilityManager implements Listener {
                         cooldowns.put(id, new EnumMap<>(MAbility.class));
                     }
                 }
-            }
-        }.runTaskTimer(plugin, 0L, 2L);
-        new BukkitRunnable() {
-            @Override
-            public void run() {
+
                 for (Map.Entry<UUID, EnumMap<MAbility, Integer>> entry : errorTimer.entrySet()) {
                     UUID id = entry.getKey();
                     Map<MAbility, Integer> errorTimers = entry.getValue();
