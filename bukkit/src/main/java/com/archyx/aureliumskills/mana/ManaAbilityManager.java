@@ -37,7 +37,7 @@ public class ManaAbilityManager implements Listener {
         ready = new HashMap<>();
         activated = new HashMap<>();
         errorTimer = new HashMap<>();
-        providers = new EnumMap<>(MAbility.class);
+        providers = new HashMap<>();
     }
 
     public void init() {
@@ -184,12 +184,12 @@ public class ManaAbilityManager implements Listener {
                         for (Map.Entry<MAbility, Integer> entry2 : abilityCooldowns.entrySet()) {
                             MAbility ab = entry2.getKey();
                             int cooldown = entry2.getValue();
-                            if (cooldown >= 2) {
-                                abilityCooldowns.put(ab, cooldown - 2);
-                            } else if (cooldown == 1) {
+                            if (cooldown > 20) {
+                                abilityCooldowns.put(ab, cooldown - 20);
+                            } else if (cooldown > 0) {
                                 abilityCooldowns.put(ab, 0);
                             }
-                            if (cooldown == 2 || cooldown == 1) {
+                            if (cooldown > 0 && cooldown <= 20) {
                                 PlayerData playerData = plugin.getPlayerManager().getPlayerData(id);
                                 if (playerData != null) {
                                     ManaAbilityRefreshEvent event = new ManaAbilityRefreshEvent(playerData.getPlayer(), ab);
