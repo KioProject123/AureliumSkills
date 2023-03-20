@@ -293,7 +293,7 @@ public class AureliumSkills extends JavaPlugin {
 			protocolLibSupport = new ProtocolLibSupport();
 			new ActionBarCompatHandler(this).registerListeners();
 		}
-		actionBar.startUpdateActionBar();
+//		actionBar.startUpdateActionBar();
 		// Initialize storage
 		this.playerManager = new PlayerManager(this);
 		this.leaderboardManager = new LeaderboardManager();

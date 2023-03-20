@@ -51,6 +51,7 @@ public class ActionBar implements Listener {
 	private final HashMap<Player, Integer> currentAction = new HashMap<>();
 	private final HashSet<UUID> actionBarDisabled = new HashSet<>();
 
+	/*
 	public void startUpdateActionBar() {
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
 			if (OptionL.getBoolean(Option.ACTION_BAR_ENABLED) && OptionL.getBoolean(Option.ACTION_BAR_IDLE)) {
@@ -92,6 +93,7 @@ public class ActionBar implements Listener {
 			}
 		}, 0L, 2L);
 	}
+	*/
 
 	public void sendXpActionBar(Player player, Skill skill, double xpAmount) {
 		if (OptionL.getBoolean(Option.ACTION_BAR_ENABLED)) { // If action bar enabled
