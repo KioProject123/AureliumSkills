@@ -14,6 +14,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class Treecapitator extends ReadiedManaAbility {
@@ -99,13 +101,20 @@ public class Treecapitator extends ReadiedManaAbility {
             }
             ForagingSource source = ForagingSource.getSource(rel);
             rel.breakNaturally();
+            player.damageItemStack(player.getInventory().getItemInMainHand(), 1); // KioCG
             tree.incrementBlocksBroken();
             if (source != null) {
                 plugin.getLeveler().addXp(player, Skills.FORAGING, getXp(player, source, Ability.FORAGER));
             }
-            if (player.getInventory().getItemInMainHand().damage()) {
+
+            // KioCG start
+            ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
+            Damageable damageable = (Damageable) itemInMainHand.getItemMeta();
+            if (damageable.getDamage() >= itemInMainHand.getType().getMaxDurability()) {
                 return;
             }
+            // KioCG end
+
             // Continue breaking blocks
             Block originalBlock = tree.getOriginalBlock();
             if (rel.getX() > originalBlock.getX() + 6 || rel.getZ() > originalBlock.getZ() + 6 || rel.getY() > originalBlock.getY() + 31) {

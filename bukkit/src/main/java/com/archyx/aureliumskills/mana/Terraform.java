@@ -17,6 +17,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.LinkedList;
@@ -81,11 +83,16 @@ public class Terraform extends ReadiedManaAbility {
         while ((block = toCheck.poll()) != null && count < maxCount) {
             if (block.getType() == material) {
                 block.setMetadata("AureliumSkills-Terraform", new FixedMetadataValue(plugin, true));
-                if (breakBlock(player, block)) {
-                    if (player.getInventory().getItemInMainHand().damage()) {
-                        return;
-                    }
+                breakBlock(player, block);
+
+                // KioCG start
+                ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
+                Damageable damageable = (Damageable) itemInMainHand.getItemMeta();
+                if (damageable.getDamage() >= itemInMainHand.getType().getMaxDurability()) {
+                    return;
                 }
+                // KioCG end
+
                 for (BlockFace face : faces) {
                     toCheck.add(block.getRelative(face));
                 }
@@ -94,20 +101,18 @@ public class Terraform extends ReadiedManaAbility {
         }
     }
 
-    private boolean breakBlock(Player player, Block block) {
+    private void breakBlock(Player player, Block block) {
         if (!plugin.getTownySupport().canBreak(player, block)) {
             block.removeMetadata("AureliumSkills-Terraform", plugin);
-            return false;
+            return;
         }
-        boolean breakBlock = false;
         TerraformBlockBreakEvent event = new TerraformBlockBreakEvent(block, player);
         Bukkit.getPluginManager().callEvent(event);
         if (!event.isCancelled()) {
             block.breakNaturally(player.getInventory().getItemInMainHand());
-            breakBlock = true;
+            player.damageItemStack(player.getInventory().getItemInMainHand(), 1); // KioCG
         }
         block.removeMetadata("AureliumSkills-Terraform", plugin);
-        return breakBlock;
     }
 
 }
