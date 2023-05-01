@@ -79,7 +79,14 @@ public class Treecapitator extends ReadiedManaAbility {
         if (plugin.getManaAbilityManager().isActivated(player.getUniqueId(), MAbility.TREECAPITATOR)) {
             ForagingSource source = ForagingSource.getSource(block);
             if (source != null) {
-                breakBlock(player, block, new TreecapitatorTree(plugin, block));
+                // KioCG start - 延迟以正确处理耐久
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        breakBlock(player, block, new TreecapitatorTree(plugin, block));
+                    }
+                }.runTaskLater(plugin, 1);
+                // KioCG end
             }
         }
     }
@@ -99,6 +106,15 @@ public class Treecapitator extends ReadiedManaAbility {
             if (plugin.getRegionManager().isPlacedBlock(rel)) {
                 continue;
             }
+
+            // KioCG start
+            ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
+            Damageable damageable = (Damageable) itemInMainHand.getItemMeta();
+            if (damageable.getDamage() >= itemInMainHand.getType().getMaxDurability() - 1) {
+                return;
+            }
+            // KioCG end
+
             ForagingSource source = ForagingSource.getSource(rel);
             rel.breakNaturally();
             player.damageItemStack(player.getInventory().getItemInMainHand(), 1); // KioCG
@@ -106,15 +122,6 @@ public class Treecapitator extends ReadiedManaAbility {
             if (source != null) {
                 plugin.getLeveler().addXp(player, Skills.FORAGING, getXp(player, source, Ability.FORAGER));
             }
-
-            // KioCG start
-            ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
-            Damageable damageable = (Damageable) itemInMainHand.getItemMeta();
-            if (damageable.getDamage() >= itemInMainHand.getType().getMaxDurability()) {
-                return;
-            }
-            // KioCG end
-
             // Continue breaking blocks
             Block originalBlock = tree.getOriginalBlock();
             if (rel.getX() > originalBlock.getX() + 6 || rel.getZ() > originalBlock.getZ() + 6 || rel.getY() > originalBlock.getY() + 31) {

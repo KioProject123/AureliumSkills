@@ -86,17 +86,16 @@ public class Terraform extends ReadiedManaAbility {
         for (Block block0 : getBlocks(block)) {
             block = block0;
             if (block.getType() == material) {
-                block.setMetadata("AureliumSkills-Terraform", new FixedMetadataValue(plugin, true));
-                breakBlock(player, block);
-
                 // KioCG start
                 ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
                 Damageable damageable = (Damageable) itemInMainHand.getItemMeta();
-                if (damageable.getDamage() >= itemInMainHand.getType().getMaxDurability()) {
+                if (damageable.getDamage() >= itemInMainHand.getType().getMaxDurability() - 2) {
                     return;
                 }
                 // KioCG end
 
+                block.setMetadata("AureliumSkills-Terraform", new FixedMetadataValue(plugin, true));
+                breakBlock(player, block);
 //                for (BlockFace face : faces) {
 //                    toCheck.add(block.getRelative(face));
 //                }
