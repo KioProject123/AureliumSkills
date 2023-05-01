@@ -21,7 +21,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.metadata.FixedMetadataValue;
 
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 public class Terraform extends ReadiedManaAbility {
 
@@ -75,12 +77,14 @@ public class Terraform extends ReadiedManaAbility {
 
     private void terraformBreak(Player player, Block block) {
         Material material = block.getType();
-        BlockFace[] faces = new BlockFace[] {BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST};
-        LinkedList<Block> toCheck = new LinkedList<>();
-        toCheck.add(block);
-        int count = 0;
-        int maxCount = plugin.getManaAbilityManager().getOptionAsInt(MAbility.TERRAFORM, "max_blocks", 61);
-        while ((block = toCheck.poll()) != null && count < maxCount) {
+//        BlockFace[] faces = new BlockFace[] {BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST, BlockFace.UP, BlockFace.DOWN};
+//        LinkedList<Block> toCheck = new LinkedList<>();
+//        toCheck.add(block);
+//        int count = 0;
+//        int maxCount = plugin.getManaAbilityManager().getOptionAsInt(MAbility.TERRAFORM, "max_blocks", 61);
+//        while ((block = toCheck.poll()) != null && count < maxCount) {
+        for (Block block0 : getBlocks(block)) {
+            block = block0;
             if (block.getType() == material) {
                 block.setMetadata("AureliumSkills-Terraform", new FixedMetadataValue(plugin, true));
                 breakBlock(player, block);
@@ -93,13 +97,26 @@ public class Terraform extends ReadiedManaAbility {
                 }
                 // KioCG end
 
-                for (BlockFace face : faces) {
-                    toCheck.add(block.getRelative(face));
-                }
-                count++;
+//                for (BlockFace face : faces) {
+//                    toCheck.add(block.getRelative(face));
+//                }
+//                count++;
             }
         }
     }
+
+    // KioCG start
+    private Set<Block> getBlocks(final Block source) {
+        final Set<Block> blocks = new HashSet<>();
+        blocks.add(source.getRelative(BlockFace.WEST));
+        blocks.add(source.getRelative(BlockFace.EAST));
+        blocks.add(source.getRelative(BlockFace.DOWN));
+        blocks.add(source.getRelative(BlockFace.UP));
+        blocks.add(source.getRelative(BlockFace.NORTH));
+        blocks.add(source.getRelative(BlockFace.SOUTH));
+        return blocks;
+    }
+    // KioCG end
 
     private void breakBlock(Player player, Block block) {
         if (!plugin.getTownySupport().canBreak(player, block)) {
