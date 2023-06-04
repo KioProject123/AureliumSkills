@@ -39,6 +39,7 @@ public class PlayerData {
 
     private boolean saving;
     private boolean shouldSave;
+    private boolean blank = true;
 
     // Not persistent data
     private final Map<String, Multiplier> multipliers;
@@ -90,6 +91,9 @@ public class PlayerData {
 
     public void setSkillLevel(Skill skill, int level) {
         skillLevels.put(skill, level);
+        if (level > 1) { // Mark as modified
+            blank = false;
+        }
     }
 
     public double getSkillXp(Skill skill) {
@@ -102,12 +106,18 @@ public class PlayerData {
 
     public void setSkillXp(Skill skill, double xp) {
         skillXp.put(skill, xp);
+        if (xp > 0.0) { // Mark as modified
+            blank = false;
+        }
     }
 
     public void addSkillXp(Skill skill, double amount) {
         if (!OptionL.isEnabled(skill)) return; // Ignore disabled skills
 
         skillXp.merge(skill, amount, Double::sum);
+        if (amount > 0.0) { // Mark as modified
+            blank = false;
+        }
     }
 
     public double getStatLevel(Stat stat) {
@@ -116,10 +126,16 @@ public class PlayerData {
 
     public void setStatLevel(Stat stat, double level) {
         statLevels.put(stat, level);
+        if (level > 0.0) { // Mark as modified
+            blank = false;
+        }
     }
 
     public void addStatLevel(Stat stat, double level) {
         statLevels.merge(stat, level, Double::sum);
+        if (level > 0.0) { // Mark as modified
+            blank = false;
+        }
     }
 
     public void addStatLevel(Stat stat, int level) {
@@ -128,6 +144,9 @@ public class PlayerData {
             statLevels.put(stat, currentLevel + level);
         } else {
             statLevels.put(stat, (double) level);
+        }
+        if (level > 0.0) { // Mark as modified
+            blank = false;
         }
     }
 
@@ -162,6 +181,7 @@ public class PlayerData {
 //                new Luck(plugin).reload(player);
 //            }
 //        }
+        blank = false; // Mark as modified
     }
 
     public boolean removeStatModifier(String name) {
@@ -334,6 +354,9 @@ public class PlayerData {
      * @return True if profile has not been modified, false if player has leveled profile
      */
     public boolean isBlankProfile() {
+        if (blank) {
+            return true;
+        }
         for (int level : skillLevels.values()) {
             if (level > 1) {
                 return false;
