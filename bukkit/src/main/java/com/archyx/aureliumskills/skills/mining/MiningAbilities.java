@@ -63,11 +63,13 @@ public class MiningAbilities extends AbilityProvider implements Listener {
 							}
 							Collection<ItemStack> drops = block.getDrops(tool);
 							for (ItemStack item : drops) {
-								PlayerLootDropEvent event = new PlayerLootDropEvent(player, item.clone(), block.getLocation().add(0.5, 0.5, 0.5), LootDropCause.LUCKY_MINER);
+								// KioCG - 调整翻倍机制
+								PlayerLootDropEvent event = new PlayerLootDropEvent(player, item.asQuantity(Math.min(3, drops.size())), block.getLocation().add(0.5, 0.5, 0.5), LootDropCause.LUCKY_MINER);
 								Bukkit.getPluginManager().callEvent(event);
 								if (!event.isCancelled()) {
 									block.getWorld().dropItem(event.getLocation(), event.getItemStack());
 								}
+								break;
 							}
 						}
 					}

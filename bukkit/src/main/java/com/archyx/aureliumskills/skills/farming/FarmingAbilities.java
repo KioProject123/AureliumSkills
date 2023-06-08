@@ -21,7 +21,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Collection;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class FarmingAbilities extends AbilityProvider implements Listener {
 
@@ -39,13 +41,19 @@ public class FarmingAbilities extends AbilityProvider implements Listener {
 					if (playerData == null) return;
 					if (playerData.getAbilityLevel(Ability.BOUNTIFUL_HARVEST) > 0) {
 						if (r.nextDouble() < (getValue(Ability.BOUNTIFUL_HARVEST, playerData)) / 100) {
-							for (ItemStack item : block.getDrops()) {
+							// KioCG start
+							ItemStack tool = player.getInventory().getItemInMainHand();
+							Collection<ItemStack> drops = block.getDrops(tool).stream().filter(itemStack -> !itemStack.getType().name().endsWith("_SEEDS")).collect(Collectors.toList());
+							for (ItemStack item : drops) {
+							// KioCG end
+								// KioCG - 调整翻倍机制
 								checkMelonSilkTouch(player, block, item);
-								PlayerLootDropEvent event = new PlayerLootDropEvent(player, item.clone(), block.getLocation().add(0.5, 0.5, 0.5), LootDropCause.BOUNTIFUL_HARVEST);
+								PlayerLootDropEvent event = new PlayerLootDropEvent(player, item.asQuantity(Math.min(5, drops.size())), block.getLocation().add(0.5, 0.5, 0.5), LootDropCause.BOUNTIFUL_HARVEST);
 								Bukkit.getPluginManager().callEvent(event);
 								if (!event.isCancelled()) {
 									block.getWorld().dropItem(event.getLocation(), event.getItemStack());
 								}
+								break;
 							}
 						}
 					}
@@ -62,7 +70,11 @@ public class FarmingAbilities extends AbilityProvider implements Listener {
 					if (playerData == null) return;
 					if (playerData.getAbilityLevel(Ability.TRIPLE_HARVEST) > 0) {
 						if (r.nextDouble() < (getValue(Ability.TRIPLE_HARVEST, playerData)) / 100) {
-							for (ItemStack item : block.getDrops()) {
+							// KioCG start
+							ItemStack tool = player.getInventory().getItemInMainHand();
+							Collection<ItemStack> drops = block.getDrops(tool);
+							for (ItemStack item : drops) {
+							// KioCG end
 								checkMelonSilkTouch(player, block, item);
 								ItemStack droppedItem = item.clone();
 								droppedItem.setAmount(2);
@@ -80,6 +92,7 @@ public class FarmingAbilities extends AbilityProvider implements Listener {
 	}
 
 	private void checkMelonSilkTouch(Player player, Block block, ItemStack item) {
+		/*
 		if (block.getType() == XMaterial.MELON.parseMaterial()) {
 			if (player.getInventory().getItemInMainHand().getEnchantmentLevel(Enchantment.SILK_TOUCH) > 0) {
 				Material melon = XMaterial.MELON.parseMaterial();
@@ -89,6 +102,7 @@ public class FarmingAbilities extends AbilityProvider implements Listener {
 				}
 			}
 		}
+		 */
 	}
 
 	@EventHandler
