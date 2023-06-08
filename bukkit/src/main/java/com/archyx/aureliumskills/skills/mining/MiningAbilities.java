@@ -48,18 +48,7 @@ public class MiningAbilities extends AbilityProvider implements Listener {
 							ItemStack tool = player.getInventory().getItemInMainHand();
 							Material mat = block.getType();
 							if (tool.getEnchantmentLevel(Enchantment.SILK_TOUCH) > 0) {
-								if (mat.equals(Material.DIAMOND_ORE) || mat.equals(Material.LAPIS_ORE) ||
-									mat.equals(Material.REDSTONE_ORE) || mat.name().equals("GLOWING_REDSTONE_ORE") ||
-									mat.equals(Material.EMERALD_ORE) || mat.equals(Material.COAL_ORE) ||
-									mat.equals(XMaterial.NETHER_QUARTZ_ORE.parseMaterial()) || mat.equals(XMaterial.NETHER_GOLD_ORE.parseMaterial())) {
-									return;
-								}
-								if (VersionUtils.isAtLeastVersion(17)) {
-									if (mat == Material.IRON_ORE || mat == Material.GOLD_ORE || mat == Material.COPPER_ORE ||
-											source.toString().contains("DEEPSLATE_")) {
-										return;
-									}
-								}
+								if (MiningLeveler.isOre(mat)) return; // KioCG
 							}
 							Collection<ItemStack> drops = block.getDrops(tool);
 							for (ItemStack item : drops) {

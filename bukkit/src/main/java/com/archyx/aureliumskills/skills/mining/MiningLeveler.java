@@ -7,6 +7,9 @@ import com.archyx.aureliumskills.configuration.OptionL;
 import com.archyx.aureliumskills.leveler.SkillLeveler;
 import com.archyx.aureliumskills.skills.Skills;
 import com.archyx.aureliumskills.source.SourceTag;
+import com.archyx.aureliumskills.util.version.VersionUtils;
+import com.cryptomorin.xseries.XMaterial;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -34,6 +37,7 @@ public class MiningLeveler extends SkillLeveler implements Listener {
 			Block block = event.getBlock();
 			// Check block replace
 			if (OptionL.getBoolean(Option.CHECK_BLOCK_REPLACE) && plugin.getRegionManager().isPlacedBlock(block)) {
+				if (!isOre(block.getType())) // KioCG
 				return;
 			}
 
@@ -60,4 +64,20 @@ public class MiningLeveler extends SkillLeveler implements Listener {
 			checkCustomBlocks(player, block, Skills.MINING);
 		}
 	}
+
+	// KioCG start
+	static boolean isOre(Material mat) {
+		if (VersionUtils.isAtLeastVersion(17)) {
+			return mat.name().endsWith("_ORE");
+		} else {
+			if (mat.equals(Material.DIAMOND_ORE) || mat.equals(Material.LAPIS_ORE) ||
+				mat.equals(Material.REDSTONE_ORE) || mat.name().equals("GLOWING_REDSTONE_ORE") ||
+				mat.equals(Material.EMERALD_ORE) || mat.equals(Material.COAL_ORE) ||
+				mat.equals(XMaterial.NETHER_QUARTZ_ORE.parseMaterial()) || mat.equals(XMaterial.NETHER_GOLD_ORE.parseMaterial())) {
+				return true;
+			}
+			return false;
+		}
+	}
+	// KioCG end
 }
