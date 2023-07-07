@@ -16,6 +16,7 @@ import com.archyx.aureliumskills.util.text.TextUtil;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -151,14 +152,14 @@ public class AgilityAbilities extends AbilityProvider implements Listener {
             if (!player.hasMetadata("AureliumSkills-Fleeting")) {
                 double percent = getValue(Ability.FLEETING, playerData);
                 float boostFactor = 1 + ((float) percent / 100);
-                float newSpeed = player.getWalkSpeed() * boostFactor;
-                if (newSpeed > 1) {
-                    newSpeed = 1.0f;
-                    percent = (newSpeed / player.getWalkSpeed() - 1) * 100;
-                }
-                float walkSpeedChange = newSpeed - player.getWalkSpeed();
-                player.setWalkSpeed(newSpeed);
-                player.setMetadata("AureliumSkills-Fleeting", new FixedMetadataValue(plugin, walkSpeedChange));
+//                float newSpeed = player.getWalkSpeed() * boostFactor;
+//                if (newSpeed > 1) {
+//                    newSpeed = 1.0f;
+//                    percent = (newSpeed / player.getWalkSpeed() - 1) * 100;
+//                }
+//                float walkSpeedChange = newSpeed - player.getWalkSpeed();
+                speedBoost(player, boostFactor);
+                player.setMetadata("AureliumSkills-Fleeting", new FixedMetadataValue(plugin, 0));
                 Locale locale = plugin.getLang().getLocale(player);
                 plugin.getAbilityManager().sendMessage(player, TextUtil.replace(Lang.getMessage(AbilityMessage.FLEETING_START, locale), "{value}", String.valueOf((int) percent)));
             }
@@ -170,14 +171,34 @@ public class AgilityAbilities extends AbilityProvider implements Listener {
         double maxHealth = attribute.getValue();
         if (player.getHealth() >= getFleetingHealthRequired() * maxHealth) {
             if (player.hasMetadata("AureliumSkills-Fleeting")) {
-                float walkSpeedChange = player.getMetadata("AureliumSkills-Fleeting").get(0).asFloat();
-                player.setWalkSpeed(player.getWalkSpeed() - walkSpeedChange);
+                speedExpire(player);
                 player.removeMetadata("AureliumSkills-Fleeting", plugin);
                 Locale locale = plugin.getLang().getLocale(player);
                 plugin.getAbilityManager().sendMessage(player, Lang.getMessage(AbilityMessage.FLEETING_END, locale));
             }
         }
     }
+
+    // KioCG start
+    public void speedBoost(Player entity, float boostFactor) {
+        AttributeInstance speed = entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
+        if (speed != null) {
+            AttributeModifier modifier = new AttributeModifier("AureliumSkills-Fleeting", boostFactor, AttributeModifier.Operation.MULTIPLY_SCALAR_1);
+            speed.addModifier(modifier);
+        }
+    }
+
+    public void speedExpire(Player entity) {
+        AttributeInstance speed = entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
+        if (speed != null) {
+            for (AttributeModifier attributeModifier : speed.getModifiers()) {
+                if (attributeModifier.getName().equals("AureliumSkills-Fleeting")) {
+                    speed.removeModifier(attributeModifier);
+                }
+            }
+        }
+    }
+    // KioCG end
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void fleetingEnd(EntityRegainHealthEvent event) {
@@ -202,8 +223,7 @@ public class AgilityAbilities extends AbilityProvider implements Listener {
         double maxHealth = attribute.getValue();
         if (player.getHealth() + amountRegenerated >= getFleetingHealthRequired() * maxHealth) {
             if (player.hasMetadata("AureliumSkills-Fleeting")) {
-                float walkSpeedChange = player.getMetadata("AureliumSkills-Fleeting").get(0).asFloat();
-                player.setWalkSpeed(player.getWalkSpeed() - walkSpeedChange);
+                speedExpire(player);
                 player.removeMetadata("AureliumSkills-Fleeting", plugin);
                 Locale locale = plugin.getLang().getLocale(player);
                 plugin.getAbilityManager().sendMessage(player, Lang.getMessage(AbilityMessage.FLEETING_END, locale));
@@ -219,8 +239,7 @@ public class AgilityAbilities extends AbilityProvider implements Listener {
 
     public void removeFleetingQuit(Player player) {
         if (player.hasMetadata("AureliumSkills-Fleeting")) {
-            float walkSpeedChange = player.getMetadata("AureliumSkills-Fleeting").get(0).asFloat();
-            player.setWalkSpeed(player.getWalkSpeed() - walkSpeedChange);
+            speedExpire(player);
             player.removeMetadata("AureliumSkills-Fleeting", plugin);
         }
     }
@@ -236,13 +255,13 @@ public class AgilityAbilities extends AbilityProvider implements Listener {
             if (!player.hasMetadata("AureliumSkills-Fleeting")) {
                 double percent = getValue(Ability.FLEETING, event.getPlayerData());
                 float boostFactor = 1 + ((float) percent / 100);
-                float newSpeed = player.getWalkSpeed() * boostFactor;
-                if (newSpeed > 1) {
-                    newSpeed = 1.0f;
-                }
-                float walkSpeedChange = newSpeed - player.getWalkSpeed();
-                player.setWalkSpeed(newSpeed);
-                player.setMetadata("AureliumSkills-Fleeting", new FixedMetadataValue(plugin, walkSpeedChange));
+//                float newSpeed = player.getWalkSpeed() * boostFactor;
+//                if (newSpeed > 1) {
+//                    newSpeed = 1.0f;
+//                }
+//                float walkSpeedChange = newSpeed - player.getWalkSpeed();
+                speedBoost(player, boostFactor);
+                player.setMetadata("AureliumSkills-Fleeting", new FixedMetadataValue(plugin, 0));
             }
         }
     }
@@ -251,8 +270,7 @@ public class AgilityAbilities extends AbilityProvider implements Listener {
     public void fleetingDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
         if (player.hasMetadata("AureliumSkills-Fleeting")) {
-            float walkSpeedChange = player.getMetadata("AureliumSkills-Fleeting").get(0).asFloat();
-            player.setWalkSpeed(player.getWalkSpeed() - walkSpeedChange);
+            speedExpire(player);
             player.removeMetadata("AureliumSkills-Fleeting", plugin);
         }
     }
