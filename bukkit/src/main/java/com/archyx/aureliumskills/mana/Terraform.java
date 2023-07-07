@@ -65,7 +65,7 @@ public class Terraform extends ReadiedManaAbility {
         if (!hasTag(source, SourceTag.TERRAFORM_APPLICABLE)) return;
         // Apply if activated
         if (isActivated(player)) {
-            if (isHoldingMaterial(player)) terraformBreak(player, block);
+            if (isHoldingMaterial(player)) terraformBreak(player, block); // KioCG
             return;
         }
         // Checks if ability is ready
@@ -77,7 +77,7 @@ public class Terraform extends ReadiedManaAbility {
 
     private void terraformBreak(Player player, Block block) {
         Material material = block.getType();
-//        BlockFace[] faces = new BlockFace[] {BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST, BlockFace.UP, BlockFace.DOWN};
+//        BlockFace[] faces = new BlockFace[] {BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST};
 //        LinkedList<Block> toCheck = new LinkedList<>();
 //        toCheck.add(block);
 //        int count = 0;

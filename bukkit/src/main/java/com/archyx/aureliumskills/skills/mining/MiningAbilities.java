@@ -50,15 +50,16 @@ public class MiningAbilities extends AbilityProvider implements Listener {
 							if (tool.getEnchantmentLevel(Enchantment.SILK_TOUCH) > 0) {
 								if (MiningLeveler.isOre(mat)) return; // KioCG
 							}
-							Collection<ItemStack> drops = block.getDrops(tool);
-							for (ItemStack item : drops) {
-								// KioCG - 调整翻倍机制
-								PlayerLootDropEvent event = new PlayerLootDropEvent(player, item.asQuantity(Math.min(3, drops.size())), block.getLocation().add(0.5, 0.5, 0.5), LootDropCause.LUCKY_MINER);
+							// KioCG start
+							tool = tool.clone();
+							tool.addEnchantment(Enchantment.LOOT_BONUS_BLOCKS, 3);
+							for (ItemStack item : block.getDrops(tool)) {
+							// KioCG end
+								PlayerLootDropEvent event = new PlayerLootDropEvent(player, item, block.getLocation().add(0.5, 0.5, 0.5), LootDropCause.LUCKY_MINER);
 								Bukkit.getPluginManager().callEvent(event);
 								if (!event.isCancelled()) {
 									block.getWorld().dropItem(event.getLocation(), event.getItemStack());
 								}
-								break;
 							}
 						}
 					}

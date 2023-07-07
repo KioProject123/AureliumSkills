@@ -21,9 +21,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Collection;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class FarmingAbilities extends AbilityProvider implements Listener {
 
@@ -42,18 +40,16 @@ public class FarmingAbilities extends AbilityProvider implements Listener {
 					if (playerData.getAbilityLevel(Ability.BOUNTIFUL_HARVEST) > 0) {
 						if (r.nextDouble() < (getValue(Ability.BOUNTIFUL_HARVEST, playerData)) / 100) {
 							// KioCG start
-							ItemStack tool = player.getInventory().getItemInMainHand();
-							Collection<ItemStack> drops = block.getDrops(tool).stream().filter(itemStack -> !itemStack.getType().name().endsWith("_SEEDS")).collect(Collectors.toList());
-							for (ItemStack item : drops) {
+							ItemStack tool = player.getInventory().getItemInMainHand().clone();
+							tool.addEnchantment(Enchantment.LOOT_BONUS_BLOCKS, 3);
+							for (ItemStack item : block.getDrops(tool)) {
 							// KioCG end
-								// KioCG - 调整翻倍机制
 								checkMelonSilkTouch(player, block, item);
-								PlayerLootDropEvent event = new PlayerLootDropEvent(player, item.asQuantity(Math.min(5, drops.size())), block.getLocation().add(0.5, 0.5, 0.5), LootDropCause.BOUNTIFUL_HARVEST);
+								PlayerLootDropEvent event = new PlayerLootDropEvent(player, item, block.getLocation().add(0.5, 0.5, 0.5), LootDropCause.BOUNTIFUL_HARVEST);
 								Bukkit.getPluginManager().callEvent(event);
 								if (!event.isCancelled()) {
 									block.getWorld().dropItem(event.getLocation(), event.getItemStack());
 								}
-								break;
 							}
 						}
 					}
@@ -71,12 +67,12 @@ public class FarmingAbilities extends AbilityProvider implements Listener {
 					if (playerData.getAbilityLevel(Ability.TRIPLE_HARVEST) > 0) {
 						if (r.nextDouble() < (getValue(Ability.TRIPLE_HARVEST, playerData)) / 100) {
 							// KioCG start
-							ItemStack tool = player.getInventory().getItemInMainHand();
-							Collection<ItemStack> drops = block.getDrops(tool);
-							for (ItemStack item : drops) {
+							ItemStack tool = player.getInventory().getItemInMainHand().clone();
+							tool.addEnchantment(Enchantment.LOOT_BONUS_BLOCKS, 3);
+							for (ItemStack item : block.getDrops(tool)) {
 							// KioCG end
 								checkMelonSilkTouch(player, block, item);
-								ItemStack droppedItem = item.clone();
+								ItemStack droppedItem = item;
 								droppedItem.setAmount(2);
 								PlayerLootDropEvent event = new PlayerLootDropEvent(player, droppedItem, block.getLocation().add(0.5, 0.5, 0.5), LootDropCause.TRIPLE_HARVEST);
 								Bukkit.getPluginManager().callEvent(event);

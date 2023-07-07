@@ -63,7 +63,7 @@ public class Treecapitator extends ReadiedManaAbility {
         if (isTrunk(block) || block.getType().toString().contains("STRIPPED")) {
             Player player = event.getPlayer();
             if (isActivated(player)) {
-                if (isHoldingMaterial(player)) breakTree(player, block);
+                if (isHoldingMaterial(player)) breakTree(player, block); // KioCG
                 return;
             }
             if (isReady(player) && isHoldingMaterial(player) && hasEnoughMana(player)) {
@@ -85,7 +85,7 @@ public class Treecapitator extends ReadiedManaAbility {
                     public void run() {
                         breakBlock(player, block, new TreecapitatorTree(plugin, block));
                     }
-                }.runTaskLater(plugin, 1);
+                }.runTaskLater(plugin, 1L);
                 // KioCG end
             }
         }
@@ -95,9 +95,7 @@ public class Treecapitator extends ReadiedManaAbility {
         if (tree.getBlocksBroken() > tree.getMaxBlocks()) {
             return;
         }
-        if (!isHoldingMaterial(player)) {
-            return;
-        }
+        if (!isHoldingMaterial(player)) return; // KioCG
         for (Block rel : BlockFaceUtil.getSurroundingBlocks(block)) {
             boolean isTrunk = isTrunk(rel);
             boolean isLeaf = isLeaf(rel);
