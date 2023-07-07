@@ -158,7 +158,7 @@ public class AgilityAbilities extends AbilityProvider implements Listener {
 //                    percent = (newSpeed / player.getWalkSpeed() - 1) * 100;
 //                }
 //                float walkSpeedChange = newSpeed - player.getWalkSpeed();
-                speedBoost(player, boostFactor);
+                speedBoost(player, boostFactor - 1);
                 player.setMetadata("AureliumSkills-Fleeting", new FixedMetadataValue(plugin, 0));
                 Locale locale = plugin.getLang().getLocale(player);
                 plugin.getAbilityManager().sendMessage(player, TextUtil.replace(Lang.getMessage(AbilityMessage.FLEETING_START, locale), "{value}", String.valueOf((int) percent)));
@@ -260,7 +260,7 @@ public class AgilityAbilities extends AbilityProvider implements Listener {
 //                    newSpeed = 1.0f;
 //                }
 //                float walkSpeedChange = newSpeed - player.getWalkSpeed();
-                speedBoost(player, boostFactor);
+                speedBoost(player, boostFactor - 1);
                 player.setMetadata("AureliumSkills-Fleeting", new FixedMetadataValue(plugin, 0));
             }
         }
