@@ -17,13 +17,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockDropItemEvent;
+import org.bukkit.inventory.CookingRecipe;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.metadata.FixedMetadataValue;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.*;
 
 public class Terraform extends ReadiedManaAbility {
 
@@ -75,47 +75,65 @@ public class Terraform extends ReadiedManaAbility {
         }
     }
 
-    private void terraformBreak(Player player, Block block) {
-        Material material = block.getType();
-//        BlockFace[] faces = new BlockFace[] {BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST};
-//        LinkedList<Block> toCheck = new LinkedList<>();
-//        toCheck.add(block);
-//        int count = 0;
-//        int maxCount = plugin.getManaAbilityManager().getOptionAsInt(MAbility.TERRAFORM, "max_blocks", 61);
-//        while ((block = toCheck.poll()) != null && count < maxCount) {
-        for (Block block0 : getBlocks(block)) {
-            block = block0;
-            if (block.getType() == material) {
-                // KioCG start
-                ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
-                Damageable damageable = (Damageable) itemInMainHand.getItemMeta();
-                if (damageable.getDamage() >= itemInMainHand.getType().getMaxDurability() - 2) {
-                    return;
-                }
-                // KioCG end
-
-                block.setMetadata("AureliumSkills-Terraform", new FixedMetadataValue(plugin, true));
-                breakBlock(player, block);
-//                for (BlockFace face : faces) {
-//                    toCheck.add(block.getRelative(face));
-//                }
-//                count++;
-            }
-        }
-    }
-
     // KioCG start
-    private Set<Block> getBlocks(final Block source) {
-        final Set<Block> blocks = new HashSet<>();
-        blocks.add(source.getRelative(BlockFace.WEST));
-        blocks.add(source.getRelative(BlockFace.EAST));
-        blocks.add(source.getRelative(BlockFace.DOWN));
-        blocks.add(source.getRelative(BlockFace.UP));
-        blocks.add(source.getRelative(BlockFace.NORTH));
-        blocks.add(source.getRelative(BlockFace.SOUTH));
-        return blocks;
+    private final Map<Material, ItemStack> smeltCache = new EnumMap<>(Material.class);
+    private final ItemStack air = new ItemStack(Material.AIR);
+
+    @EventHandler
+    public void onBlockDropItem(BlockDropItemEvent event) {
+        if (!event.getBlock().hasMetadata("AureliumSkills-Terraform")) return;
+        event.getBlock().removeMetadata("AureliumSkills-Terraform", plugin);
+
+        event.getItems().forEach(item -> {
+            ItemStack origon = item.getItemStack();
+            if (origon.hasItemMeta()) return; // 尽可能兼容其他插件
+
+            ItemStack result = smeltCache.computeIfAbsent(origon.getType(), material -> {
+                ItemStack itemStack = origon;
+
+                outer:
+                while (true) {
+                    Iterator<Recipe> iterator = Bukkit.recipeIterator();
+                    while (iterator.hasNext()) {
+                        Recipe recipe = iterator.next();
+                        if (!(recipe instanceof CookingRecipe)) continue;
+                        if (!((CookingRecipe<?>) recipe).getInputChoice().test(itemStack)) continue;
+                        itemStack = recipe.getResult();
+                        continue outer;
+                    }
+                    return itemStack != origon ? itemStack : air;
+                }
+            });
+
+            if (result != air) {
+                item.setItemStack(result);
+            }
+        });
     }
     // KioCG end
+
+    private void terraformBreak(Player player, Block block) {
+        block.setMetadata("AureliumSkills-Terraform", new FixedMetadataValue(plugin, true)); // KioCG
+
+        /*
+        Material material = block.getType();
+        BlockFace[] faces = new BlockFace[] {BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST};
+        LinkedList<Block> toCheck = new LinkedList<>();
+        toCheck.add(block);
+        int count = 0;
+        int maxCount = plugin.getManaAbilityManager().getOptionAsInt(MAbility.TERRAFORM, "max_blocks", 61);
+        while ((block = toCheck.poll()) != null && count < maxCount) {
+            if (block.getType() == material) {
+                block.setMetadata("AureliumSkills-Terraform", new FixedMetadataValue(plugin, true));
+                breakBlock(player, block);
+                for (BlockFace face : faces) {
+                    toCheck.add(block.getRelative(face));
+                }
+                count++;
+            }
+        }
+         */
+    }
 
     private void breakBlock(Player player, Block block) {
         if (!plugin.getTownySupport().canBreak(player, block)) {
@@ -126,7 +144,6 @@ public class Terraform extends ReadiedManaAbility {
         Bukkit.getPluginManager().callEvent(event);
         if (!event.isCancelled()) {
             block.breakNaturally(player.getInventory().getItemInMainHand());
-            player.damageItemStack(player.getInventory().getItemInMainHand(), 1); // KioCG
         }
         block.removeMetadata("AureliumSkills-Terraform", plugin);
     }

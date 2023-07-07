@@ -99,6 +99,7 @@ public abstract class ManaAbilityProvider extends AbilityProvider implements Lis
 
     // Returns true if player has enough mana
     protected boolean hasEnoughMana(Player player) {
+        if (true) return true; // KioCG
         PlayerData playerData = plugin.getPlayerManager().getPlayerData(player);
         if (playerData == null) return false;
         Locale locale = playerData.getLocale();
