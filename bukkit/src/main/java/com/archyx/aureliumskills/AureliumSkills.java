@@ -97,6 +97,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -367,8 +368,10 @@ public class AureliumSkills extends JavaPlugin {
 		itemRegistry.saveToFile();
 		// Remove fleeting
 		AgilityAbilities agilityAbilities = new AgilityAbilities(this);
+		ArcheryAbilities archeryAbilities = new ArcheryAbilities(this);
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			agilityAbilities.removeFleetingQuit(player);
+			archeryAbilities.removeStun(new PlayerQuitEvent(player, (String) null));
 		}
 	}
 
