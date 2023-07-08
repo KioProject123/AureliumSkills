@@ -7,6 +7,7 @@ import com.archyx.aureliumskills.ability.AbilityProvider;
 import com.archyx.aureliumskills.configuration.OptionL;
 import com.archyx.aureliumskills.data.PlayerData;
 import com.archyx.aureliumskills.skills.Skills;
+import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
@@ -20,6 +21,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Random;
@@ -48,13 +51,22 @@ public class ArcheryAbilities extends AbilityProvider implements Listener {
 
     public void stun(PlayerData playerData, LivingEntity entity) {
         if (r.nextDouble() < (getValue(Ability.STUN, playerData) / 100)) {
+            // KioCG start
+            if (entity instanceof Player) {
+                Location location = entity.getLocation();
+                location.setPitch(r.nextFloat(-90.0F, 90.0F));
+                location.setYaw(location.getYaw() + r.nextFloat(-90.0F, 90.0F));
+                entity.teleport(location);
+                entity.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 10, 10));
+            } else
+            // KioCG end
             if (entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED) != null) {
                 AttributeInstance speed = entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
                 if (speed != null) {
                     //Applies stun
                     double reducedSpeed = speed.getValue() * 0.2;
                     AttributeModifier modifier = new AttributeModifier("AureliumSkills-Stun", -1 * reducedSpeed, AttributeModifier.Operation.ADD_NUMBER);
-                    speed.addModifier(modifier);
+                    speed.addTransientModifier(modifier);
                     new BukkitRunnable() {
                         @Override
                         public void run() {
@@ -73,6 +85,7 @@ public class ArcheryAbilities extends AbilityProvider implements Listener {
         }
     }
 
+    /*
     @EventHandler
     public void removeStun(PlayerQuitEvent event) {
         //Removes stun on logout
@@ -85,6 +98,7 @@ public class ArcheryAbilities extends AbilityProvider implements Listener {
             }
         }
     }
+     */
 
     public void piercing(EntityDamageByEntityEvent event, PlayerData playerData, Player player, Arrow arrow) {
         // Disable if enemy is blocking with a shield
