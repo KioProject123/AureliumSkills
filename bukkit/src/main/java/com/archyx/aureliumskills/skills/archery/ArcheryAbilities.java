@@ -55,12 +55,6 @@ public class ArcheryAbilities extends AbilityProvider implements Listener {
                     double reducedSpeed = speed.getValue() * 0.2;
                     AttributeModifier modifier = new AttributeModifier("AureliumSkills-Stun", -1 * reducedSpeed, AttributeModifier.Operation.ADD_NUMBER);
                     speed.addModifier(modifier);
-                    // KioCG start
-                    if (entity instanceof Player) {
-                        ((Player) entity).setWalkSpeed(-Math.abs(((Player) entity).getWalkSpeed()));
-                        ((Player) entity).setFlySpeed(-Math.abs(((Player) entity).getFlySpeed()));
-                    }
-                    // KioCG end
                     new BukkitRunnable() {
                         @Override
                         public void run() {
@@ -69,12 +63,6 @@ public class ArcheryAbilities extends AbilityProvider implements Listener {
                                 for (AttributeModifier attributeModifier : newSpeed.getModifiers()) {
                                     if (attributeModifier.getName().equals("AureliumSkills-Stun")) {
                                         newSpeed.removeModifier(attributeModifier);
-                                        // KioCG start
-                                        if (entity instanceof Player) {
-                                            ((Player) entity).setWalkSpeed(Math.abs(((Player) entity).getWalkSpeed()));
-                                            ((Player) entity).setFlySpeed(Math.abs(((Player) entity).getFlySpeed()));
-                                        }
-                                        // KioCG end
                                     }
                                 }
                             }
@@ -93,11 +81,6 @@ public class ArcheryAbilities extends AbilityProvider implements Listener {
             for (AttributeModifier attributeModifier : speed.getModifiers()) {
                 if (attributeModifier.getName().equals("AureliumSkills-Stun")) {
                     speed.removeModifier(attributeModifier);
-                    // KioCG start
-                    Player player = event.getPlayer();
-                    player.setWalkSpeed(Math.abs(player.getWalkSpeed()));
-                    player.setFlySpeed(Math.abs(player.getFlySpeed()));
-                    // KioCG end
                 }
             }
         }
