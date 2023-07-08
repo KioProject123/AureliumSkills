@@ -52,7 +52,9 @@ public class MiningAbilities extends AbilityProvider implements Listener {
 							}
 							// KioCG start
 							tool = tool.clone();
-							tool.addEnchantment(Enchantment.LOOT_BONUS_BLOCKS, 3);
+							if (Enchantment.LOOT_BONUS_BLOCKS.canEnchantItem(tool)) {
+								tool.addUnsafeEnchantment(Enchantment.LOOT_BONUS_BLOCKS, 3);
+							}
 							for (ItemStack item : block.getDrops(tool)) {
 							// KioCG end
 								PlayerLootDropEvent event = new PlayerLootDropEvent(player, item, block.getLocation().add(0.5, 0.5, 0.5), LootDropCause.LUCKY_MINER);

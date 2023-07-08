@@ -41,7 +41,9 @@ public class FarmingAbilities extends AbilityProvider implements Listener {
 						if (r.nextDouble() < (getValue(Ability.BOUNTIFUL_HARVEST, playerData)) / 100) {
 							// KioCG start
 							ItemStack tool = player.getInventory().getItemInMainHand().clone();
-							tool.addEnchantment(Enchantment.LOOT_BONUS_BLOCKS, 3);
+							if (Enchantment.LOOT_BONUS_BLOCKS.canEnchantItem(tool)) {
+								tool.addUnsafeEnchantment(Enchantment.LOOT_BONUS_BLOCKS, 3);
+							}
 							for (ItemStack item : block.getDrops(tool)) {
 							// KioCG end
 								checkMelonSilkTouch(player, block, item);
@@ -68,7 +70,9 @@ public class FarmingAbilities extends AbilityProvider implements Listener {
 						if (r.nextDouble() < (getValue(Ability.TRIPLE_HARVEST, playerData)) / 100) {
 							// KioCG start
 							ItemStack tool = player.getInventory().getItemInMainHand().clone();
-							tool.addEnchantment(Enchantment.LOOT_BONUS_BLOCKS, 3);
+							if (Enchantment.LOOT_BONUS_BLOCKS.canEnchantItem(tool)) {
+								tool.addUnsafeEnchantment(Enchantment.LOOT_BONUS_BLOCKS, 3);
+							}
 							for (ItemStack item : block.getDrops(tool)) {
 							// KioCG end
 								checkMelonSilkTouch(player, block, item);
