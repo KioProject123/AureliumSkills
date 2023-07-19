@@ -46,11 +46,22 @@ public class MiningAbilities extends AbilityProvider implements Listener {
 					if (playerData.getAbilityLevel(Ability.LUCKY_MINER) > 0) {
 						if (r.nextDouble() < (getValue(Ability.LUCKY_MINER, playerData) / 100)) {
 							ItemStack tool = player.getInventory().getItemInMainHand();
-							Material mat = block.getType();
-							if (tool.getEnchantmentLevel(Enchantment.SILK_TOUCH) > 0) {
-								if (MiningLeveler.isOre(mat)) return; // KioCG
-							}
 							// KioCG start
+//							Material mat = block.getType();
+//							if (tool.getEnchantmentLevel(Enchantment.SILK_TOUCH) > 0) {
+//								if (mat.equals(Material.DIAMOND_ORE) || mat.equals(Material.LAPIS_ORE) ||
+//									mat.equals(Material.REDSTONE_ORE) || mat.name().equals("GLOWING_REDSTONE_ORE") ||
+//									mat.equals(Material.EMERALD_ORE) || mat.equals(Material.COAL_ORE) ||
+//									mat.equals(XMaterial.NETHER_QUARTZ_ORE.parseMaterial()) || mat.equals(XMaterial.NETHER_GOLD_ORE.parseMaterial())) {
+//									return;
+//								}
+//								if (VersionUtils.isAtLeastVersion(17)) {
+//									if (mat == Material.IRON_ORE || mat == Material.GOLD_ORE || mat == Material.COPPER_ORE ||
+//											source.toString().contains("DEEPSLATE_")) {
+//										return;
+//									}
+//								}
+//							}
 							tool = tool.clone();
 							if (Enchantment.LOOT_BONUS_BLOCKS.canEnchantItem(tool)) {
 								tool.addUnsafeEnchantment(Enchantment.LOOT_BONUS_BLOCKS, 3);

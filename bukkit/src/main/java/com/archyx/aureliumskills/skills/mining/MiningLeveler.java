@@ -35,11 +35,18 @@ public class MiningLeveler extends SkillLeveler implements Listener {
 				return;
 			}
 			Block block = event.getBlock();
+			// KioCG start
+			if (isOre(block.getType())) {
+				if (hasSilkTouch(event.getPlayer())) {
+					return;
+				}
+			} else {
 			// Check block replace
 			if (OptionL.getBoolean(Option.CHECK_BLOCK_REPLACE) && plugin.getRegionManager().isPlacedBlock(block)) {
-				if (!isOre(block.getType())) // KioCG
 				return;
 			}
+			}
+			// KioCG end
 
 			Player player = event.getPlayer();
 			if (blockXpGainLocation(block.getLocation(), player, Skills.MINING)) return;
