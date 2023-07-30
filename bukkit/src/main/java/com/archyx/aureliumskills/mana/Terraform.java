@@ -85,11 +85,11 @@ public class Terraform extends ReadiedManaAbility {
         event.getBlock().removeMetadata("AureliumSkills-Terraform", plugin);
 
         event.getItems().forEach(item -> {
-            ItemStack origon = item.getItemStack();
-            if (origon.hasItemMeta()) return; // 尽可能兼容其他插件
+            final ItemStack origin = item.getItemStack();
+            if (origin.hasItemMeta()) return; // 尽可能兼容其他插件
 
-            ItemStack result = smeltCache.computeIfAbsent(origon.getType(), material -> {
-                ItemStack itemStack = origon;
+            ItemStack result = smeltCache.computeIfAbsent(origin.getType(), material -> {
+                ItemStack itemStack = origin;
 
                 outer:
                 while (true) {
@@ -101,11 +101,12 @@ public class Terraform extends ReadiedManaAbility {
                         itemStack = recipe.getResult();
                         continue outer;
                     }
-                    return itemStack != origon ? itemStack : air;
+                    return itemStack != origin ? itemStack : air;
                 }
             });
 
             if (result != air) {
+                result.setAmount(result.getAmount() * origin.getAmount());
                 item.setItemStack(result);
             }
         });
