@@ -106,8 +106,7 @@ public class Terraform extends ReadiedManaAbility {
             });
 
             if (result != air) {
-                result.setAmount(result.getAmount() * origin.getAmount());
-                item.setItemStack(result);
+                item.setItemStack(result.asQuantity(result.getAmount() * origin.getAmount()));
             }
         });
     }
