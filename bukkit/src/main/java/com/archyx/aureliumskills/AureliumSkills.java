@@ -81,8 +81,6 @@ import com.archyx.aureliumskills.support.*;
 import com.archyx.aureliumskills.ui.ActionBar;
 import com.archyx.aureliumskills.ui.ActionBarCompatHandler;
 import com.archyx.aureliumskills.ui.SkillBossBar;
-import com.archyx.aureliumskills.util.armor.ArmorListener;
-import com.archyx.aureliumskills.util.version.UpdateChecker;
 import com.archyx.aureliumskills.util.version.VersionUtils;
 import com.archyx.aureliumskills.util.world.WorldManager;
 import com.archyx.slate.Slate;
@@ -337,7 +335,7 @@ public class AureliumSkills extends JavaPlugin {
 		int pluginId = 8629;
 		new Metrics(this, pluginId);
 		getLogger().info("Aurelium Skills has been enabled");
-		checkUpdates();
+//		checkUpdates();
 		MinecraftVersion.disableUpdateCheck();
 		// Check if NBT API is supported for the version
 		if (MinecraftVersion.getVersion() == MinecraftVersion.UNKNOWN) {
@@ -405,19 +403,19 @@ public class AureliumSkills extends JavaPlugin {
 		}
 	}
 
-	public void checkUpdates() {
-		// Check for updates
-		if (!OptionL.getBoolean(Option.CHECK_FOR_UPDATES)) return;
-		UpdateChecker updateChecker = new UpdateChecker(this, 81069);
-		updateChecker.getVersion(version -> {
-			if (updateChecker.isOutdated(this.getDescription().getVersion(), version)) {
-				getLogger().info("New update available! You are on version " + this.getDescription().getVersion() + ", latest version is " +
-						version);
-				getLogger().info("Download it on Spigot:");
-				getLogger().info("https://spigotmc.org/resources/" + resourceId);
-			}
-		});
-	}
+//	public void checkUpdates() {
+//		// Check for updates
+//		if (!OptionL.getBoolean(Option.CHECK_FOR_UPDATES)) return;
+//		UpdateChecker updateChecker = new UpdateChecker(this, 81069);
+//		updateChecker.getVersion(version -> {
+//			if (updateChecker.isOutdated(this.getDescription().getVersion(), version)) {
+//				getLogger().info("New update available! You are on version " + this.getDescription().getVersion() + ", latest version is " +
+//						version);
+//				getLogger().info("Download it on Spigot:");
+//				getLogger().info("https://spigotmc.org/resources/" + resourceId);
+//			}
+//		});
+//	}
 
 	public void loadConfig() {
 		getConfig().options().copyDefaults(true);

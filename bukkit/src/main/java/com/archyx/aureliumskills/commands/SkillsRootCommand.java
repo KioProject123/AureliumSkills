@@ -18,7 +18,6 @@ import com.archyx.aureliumskills.skills.Skill;
 import com.archyx.aureliumskills.ui.ActionBar;
 import com.archyx.aureliumskills.util.math.NumberUtil;
 import com.archyx.aureliumskills.util.text.TextUtil;
-import com.archyx.aureliumskills.util.version.UpdateChecker;
 import de.tr7zw.changeme.nbtapi.NBTCompoundList;
 import de.tr7zw.changeme.nbtapi.NBTFile;
 import de.tr7zw.changeme.nbtapi.iface.ReadWriteNBT;
