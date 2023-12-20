@@ -8,7 +8,6 @@ import com.archyx.aureliumskills.data.PlayerData;
 import com.archyx.aureliumskills.loot.handler.LootHandler;
 import com.archyx.aureliumskills.skills.Skills;
 import com.archyx.aureliumskills.source.Source;
-import com.archyx.aureliumskills.support.WorldGuardFlags;
 import com.archyx.aureliumskills.util.version.VersionUtils;
 import com.archyx.lootmanager.loot.Loot;
 import com.archyx.lootmanager.loot.LootPool;
@@ -41,15 +40,15 @@ public class FishingLootHandler extends LootHandler implements Listener {
         if (plugin.getWorldManager().isInBlockedWorld(player.getLocation())) {
             return;
         }
-        if (plugin.isWorldGuardEnabled()) {
-            if (plugin.getWorldGuardSupport().isInBlockedRegion(player.getLocation())) {
-                return;
-            }
-            // Check if blocked by flags
-            else if (plugin.getWorldGuardSupport().blockedByFlag(player.getLocation(), player, WorldGuardFlags.FlagKey.CUSTOM_LOOT)) {
-                return;
-            }
-        }
+//        if (plugin.isWorldGuardEnabled()) {
+//            if (plugin.getWorldGuardSupport().isInBlockedRegion(player.getLocation())) {
+//                return;
+//            }
+//            // Check if blocked by flags
+//            else if (plugin.getWorldGuardSupport().blockedByFlag(player.getLocation(), player, WorldGuardFlags.FlagKey.CUSTOM_LOOT)) {
+//                return;
+//            }
+//        }
 
         if (!(event.getCaught() instanceof Item)) return;
         if (!event.getState().equals(PlayerFishEvent.State.CAUGHT_FISH)) return;

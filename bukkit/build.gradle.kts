@@ -55,14 +55,9 @@ dependencies {
     implementation("com.github.Archy-X:LootManager:60d109fdde")
     compileOnly("org.purpurmc.purpur:purpur-api:1.20-R0.1-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.11.2")
-    compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.5")
-    compileOnly("com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.9")
-    compileOnly("com.github.decentsoftware-eu:decentholograms:2.5.2")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
     compileOnly("com.github.dmulloy2:ProtocolLib:43145bd478")
     compileOnly("net.luckperms:api:5.4")
-    compileOnly("com.github.TownyAdvanced:Towny:0.98.3.6")
-    compileOnly("com.github.Slimefun:Slimefun4:RC-32")
 }
 
 tasks.withType<ShadowJar> {

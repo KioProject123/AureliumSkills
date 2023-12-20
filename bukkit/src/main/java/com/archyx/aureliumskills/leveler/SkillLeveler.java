@@ -9,7 +9,6 @@ import com.archyx.aureliumskills.skills.Skill;
 import com.archyx.aureliumskills.source.Source;
 import com.archyx.aureliumskills.source.SourceManager;
 import com.archyx.aureliumskills.source.SourceTag;
-import com.archyx.aureliumskills.support.WorldGuardFlags;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -131,16 +130,16 @@ public abstract class SkillLeveler {
         if (OptionL.getBoolean(Option.DISABLE_IN_CREATIVE_MODE)) {
             return player.getGameMode().equals(GameMode.CREATIVE);
         }
-        //Checks if in blocked region
-        if (plugin.isWorldGuardEnabled()) {
-            if (plugin.getWorldGuardSupport().isInBlockedRegion(location)) {
-                return true;
-            }
-            // Check if blocked by flags
-            else if (plugin.getWorldGuardSupport().blockedByFlag(location, player, WorldGuardFlags.FlagKey.XP_GAIN)) {
-                return true;
-            } else return plugin.getWorldGuardSupport().blockedBySkillFlag(location, player, skill);
-        }
+//        //Checks if in blocked region
+//        if (plugin.isWorldGuardEnabled()) {
+//            if (plugin.getWorldGuardSupport().isInBlockedRegion(location)) {
+//                return true;
+//            }
+//            // Check if blocked by flags
+//            else if (plugin.getWorldGuardSupport().blockedByFlag(location, player, WorldGuardFlags.FlagKey.XP_GAIN)) {
+//                return true;
+//            } else return plugin.getWorldGuardSupport().blockedBySkillFlag(location, player, skill);
+//        }
         return false;
     }
 
@@ -149,16 +148,16 @@ public abstract class SkillLeveler {
         if (plugin.getWorldManager().isInBlockedWorld(location)) {
             return true;
         }
-        //Checks if in blocked region
-        if (plugin.isWorldGuardEnabled()) {
-            if (plugin.getWorldGuardSupport().isInBlockedRegion(location)) {
-                return true;
-            }
-            // Check if blocked by flags
-            else if (plugin.getWorldGuardSupport().blockedByFlag(location, player, WorldGuardFlags.FlagKey.XP_GAIN)) {
-                return true;
-            } else return plugin.getWorldGuardSupport().blockedBySkillFlag(location, player, skill);
-        }
+//        //Checks if in blocked region
+//        if (plugin.isWorldGuardEnabled()) {
+//            if (plugin.getWorldGuardSupport().isInBlockedRegion(location)) {
+//                return true;
+//            }
+//            // Check if blocked by flags
+//            else if (plugin.getWorldGuardSupport().blockedByFlag(location, player, WorldGuardFlags.FlagKey.XP_GAIN)) {
+//                return true;
+//            } else return plugin.getWorldGuardSupport().blockedBySkillFlag(location, player, skill);
+//        }
         return false;
     }
 
