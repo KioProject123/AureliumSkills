@@ -110,8 +110,10 @@ public class ArcheryAbilities extends AbilityProvider implements Listener {
             }
         }
         if (r.nextDouble() < (getValue(Ability.PIERCING, playerData) / 100)) {
-            arrow.setBounce(false);
-            arrow.setPierceLevel(arrow.getPierceLevel() + 1);
+            if (arrow.getPierceLevel() < 127) {
+                arrow.setBounce(false);
+                arrow.setPierceLevel(arrow.getPierceLevel() + 1);
+            }
         }
     }
 
@@ -119,7 +121,9 @@ public class ArcheryAbilities extends AbilityProvider implements Listener {
         if (blockAbility(player)) return;
         if (r.nextDouble() < (getValue(Ability.PIERCING, playerData) / 100)) {
             // Adds 1 pierce to the initial shot otherwise it doesn't pierce on non-lethal damage.
-            arrow.setPierceLevel(arrow.getPierceLevel() + 1);
+            if (arrow.getPierceLevel() < 127) {
+                arrow.setPierceLevel(arrow.getPierceLevel() + 1);
+            }
         }
     }
 
